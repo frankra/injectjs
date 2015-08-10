@@ -19,11 +19,11 @@
 		var sPart = aAliasParts.splice(0,1)[0];
 		if (sPart){
 			if (!oNavigator.hasOwnProperty(sPart)){
-				oNavigator = oNavigator[sPart] = {};	
+				oNavigator = oNavigator[sPart] = {};
 			}else {
 				oNavigator = oNavigator[sPart];
 			}
-			
+			//Recursion can cause Stack-overflow errors. JS don't support tail calculation
 			this._setRegisterFromAlias(oNavigator,aAliasParts,sAlias,sPhysicalPath);
 		}else {
 			oNavigator.path = sPhysicalPath
@@ -44,10 +44,10 @@
 	};
 	Import.prototype._assembleRequirePath = function(sRequiredAlias,bAddJSSuffix){
 		var oRegister = this._getRegisterFromAlias(this._mPathTree,sRequiredAlias.split('.'));
-		
+
 		var sAliasReplaced = sRequiredAlias.replace(oRegister.alias,oRegister.path);
 
-		var sAssembledRequirePath = this._prepareRequirePath(sAliasReplaced,bAddJSSuffix);		
+		var sAssembledRequirePath = this._prepareRequirePath(sAliasReplaced,bAddJSSuffix);
 
 		return sAssembledRequirePath;
 	};
@@ -66,7 +66,7 @@
 				this._assembleRequirePath(sRequiredAlias,true),
 				fnResolve
 			);
-		},this));		
+		},this));
 	};
 
 	Import.prototype.path = function(sRequiredAlias){
@@ -93,7 +93,7 @@
 				)
 			);
 		}
-		
+
 		return Promise.all(aFilePromises);
 	};
 
@@ -106,11 +106,11 @@
 	Import.prototype._require = function(sRequirePath,fnResolve){
 		return require(sRequirePath)(fnResolve);
 	};
-	
+
 	Import.prototype._readdirSync = function(sRequirePath){
 		return this._oFS.readdirSync(sRequirePath);
 	};
-	
+
 	//Singleton
 	global.Import = new Import();
 }())

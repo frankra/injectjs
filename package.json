@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -w test/**/*spec.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Frankrafael/injectjs/issues"
   },
-  "homepage": "https://github.com/Frankrafael/injectjs#readme"
+  "homepage": "https://github.com/Frankrafael/injectjs#readme",
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  }
 }

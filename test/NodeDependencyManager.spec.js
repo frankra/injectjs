@@ -1,16 +1,17 @@
-require('../../bootstrap.js');
-var fnNodeDependencyManager = require('../../../src/foundation/core/NodeDependencyManager.js');
+require(__dirname + '/bootstrap.js');
+
+var fnNodeDependencyManager = require(__base + '/src/NodeDependencyManager.js');
 
 var oNodeDependencyManager;
 function restart(){
 	delete oNodeDependencyManager;
 	oNodeDependencyManager = new fnNodeDependencyManager({
-		path:'backend/src/foundation/core/NodeDependenciesMap.json'
+		path:'src/NodeDependenciesMap.json'
 	});
 }
 
 
-describe("Creation of the Dependency Manager", function() {
+describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manager", function() {
 	it("Should read and parse the configuration file for the given path",
    	function() {
    		restart();
@@ -18,7 +19,7 @@ describe("Creation of the Dependency Manager", function() {
 		expect(oNodeDependencyManager.getConfig()).not.toBeNull();
 	});
 
-	it("Should provide the dependency required by its alias " + 
+	it("Should provide the dependency required by its alias " +
 		"and the function should return a Promise" ,
    	function() {
    		restart();
@@ -59,13 +60,13 @@ describe("Creation of the Dependency Manager", function() {
 			"name" : "test.dependency",
 			"execute" : true,
 			"executionArguments" : [{
-				"alias" : "oSimpleTestDependency" 
+				"alias" : "oSimpleTestDependency"
 			}]
 		}
-	
+
 		var fnModuleSpy = jasmine.createSpy();
 		oNodeDependencyManager._requireModule = function(){return fnModuleSpy}
-		
+
 		//Inject dependency on config, so I can load it.
 		oNodeDependencyManager._mConfig['oSimpleTestDependency'] = oSimpleTestDependency;
 		oNodeDependencyManager._mConfig['oDependencyConfig'] = oDependencyConfig;
@@ -76,11 +77,8 @@ describe("Creation of the Dependency Manager", function() {
 			expect(fnModuleSpy.calls[0].args[0]).toBe(fnModuleSpy);
 			done();
 		});
-		
-
-
 	});
-	
+
 	it("Should always provide the same dependency pointer. //Covered by node require cache",
 	function(){
 		restart();
@@ -88,7 +86,7 @@ describe("Creation of the Dependency Manager", function() {
 			expect(aResults[0]).toBe(aResults[1]);
 			done();
 		})
-		
+
 	});
 
-}); 
+});

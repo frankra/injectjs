@@ -1,8 +1,8 @@
-require('../../bootstrap.js');
+require(__dirname + '/bootstrap.js');
 
 define(['backend.src.foundation.core.Utils'],Utils.proxy(function(Utils){
-   
-   describe("Creation of the Utils Singleton", function() {
+
+   describe("src.Utils.prototype - Creation of the Utils Singleton", function() {
    it("Should be initialized when required, and should be a singleton.",
       function() {
          expect(Utils).not.toBeUndefined();
@@ -11,8 +11,8 @@ define(['backend.src.foundation.core.Utils'],Utils.proxy(function(Utils){
 
    });
 
-   describe("Utils Singleton - API", function() {
-      it("Should have a .proxy function that proxies the fnCallback to the "+ 
+   describe("src.Utils.prototype - Utils Singleton - API", function() {
+      it("Should have a .proxy function that proxies the fnCallback to the "+
          "oCallbackContext.",
          function() {
             expect(typeof Utils.proxy).toBe('function');
@@ -56,4 +56,3 @@ define(['backend.src.foundation.core.Utils'],Utils.proxy(function(Utils){
 
 
 },this));
-
