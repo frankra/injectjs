@@ -17,14 +17,14 @@ describe("src.Import.prototype - Import API",function(){
 
 		Import.mapModulePath(sAlias,sPhysicalPath);
 
-		expect(Import._getRegisterFromAlias(Import._mPathTree,sAlias.split('.')).path).toBe(sPhysicalPath);
+		chai.expect(Import._getRegisterFromAlias(Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
 	});
 
 	it("Should provide a Promise for the module required",
 	function(){
 		Import.module('src.Class').then(function(fnClass){
-			expect(fnClass).not.toBeUndefined();
-			expect(Class).not.toBeUndefined();
+			chai.expect(fnClass).to.not.equal(undefined);
+			chai.expect(Class).to.not.equal(undefined);
 			done();
 		});
 
@@ -38,7 +38,7 @@ describe("src.Import.prototype - Import API",function(){
 		var sAlias = 'backend.src.wsockets';
 
 		Import.path(sAlias).then(function(aFiles){
-			expect(aFiles).not.toBeUndefined();
+			chai.expect(aFiles).not.to.equalUndefined();
 		});
 
 	});*/

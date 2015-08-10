@@ -15,8 +15,8 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 	it("Should read and parse the configuration file for the given path",
    	function() {
    		restart();
-		expect(oNodeDependencyManager).not.toBeNull();
-		expect(oNodeDependencyManager.getConfig()).not.toBeNull();
+		chai.expect(oNodeDependencyManager).to.not.be.null;
+		chai.expect(oNodeDependencyManager.getConfig()).to.not.be.null;
 	});
 
 	it("Should provide the dependency required by its alias " +
@@ -24,10 +24,10 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
    	function() {
    		restart();
 
-   		expect(oNodeDependencyManager.getDependency('oExpress')).not.toBeUndefined();
-   		expect(oNodeDependencyManager.getDependency('oExpress') instanceof Promise).toBe(true);
+   		chai.expect(oNodeDependencyManager.getDependency('oExpress')).to.not.be.undefined;
+   		chai.expect(oNodeDependencyManager.getDependency('oExpress') instanceof Promise).to.equal(true);
    		oNodeDependencyManager.getDependency('oExpress').then(function(oExpress){
-   			expect(oExpress).toBe(require('express'));
+   			chai.expect(oExpress).to.equal(require('express'));
    			done();
    		})
 	});
@@ -35,15 +35,15 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 	it("Should fetch the dependencies to initialize a module before actually initializing it",
    	function() {
    		restart();
-   		spyOn(oNodeDependencyManager,'_fetchDependencyByAlias').andCallThrough();
+   		chai.spy.on(oNodeDependencyManager,'_fetchDependencyByAlias');
 
-   		expect(oNodeDependencyManager.getDependency('oSocketIO')).not.toBeUndefined();
-   		expect(oNodeDependencyManager.getDependency('oSocketIO') instanceof Promise).toBe(true);
+   		chai.expect(oNodeDependencyManager.getDependency('oSocketIO')).to.not.be.undefined;
+   		chai.expect(oNodeDependencyManager.getDependency('oSocketIO') instanceof Promise).to.equal(true);
    		//Loaded because oSocketIO require them
    		oNodeDependencyManager.getDependency('oSocketIO').then(function(){
-   			expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oSocketIO');
-			expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oHTTP');
-			expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oApp');
+   			chai.expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oSocketIO');
+			chai.expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oHTTP');
+			chai.expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oApp');
 			done();
    		});
 	});
@@ -64,7 +64,7 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 			}]
 		}
 
-		var fnModuleSpy = jasmine.createSpy();
+		var fnModuleSpy = chai.spy();
 		oNodeDependencyManager._requireModule = function(){return fnModuleSpy}
 
 		//Inject dependency on config, so I can load it.
@@ -72,9 +72,9 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 		oNodeDependencyManager._mConfig['oDependencyConfig'] = oDependencyConfig;
 
 		oNodeDependencyManager.getDependency('oDependencyConfig').then(function(){
-			expect(fnModuleSpy.callCount).toBe(1);
+			chai.expect(fnModuleSpy.callCount).to.equal(1);
 			//Provided the fnModuleSpy as argument. All good!
-			expect(fnModuleSpy.calls[0].args[0]).toBe(fnModuleSpy);
+			chai.expect(fnModuleSpy.calls[0].args[0]).to.equal(fnModuleSpy);
 			done();
 		});
 	});
@@ -83,7 +83,7 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 	function(){
 		restart();
 		Promise.all([oNodeDependencyManager.getDependency('oHTTP'),oNodeDependencyManager.getDependency('oHTTP')]).then(function(aResults){
-			expect(aResults[0]).toBe(aResults[1]);
+			chai.expect(aResults[0]).to.equal(aResults[1]);
 			done();
 		})
 
