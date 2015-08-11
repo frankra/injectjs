@@ -1,53 +1,54 @@
-require('../../bootstrap.js');
-var fnNodeDependencyManager = require('../../../src/foundation/core/NodeDependencyManager.js');
+require(__dirname + '/bootstrap.js');
+
+var fnNodeDependencyManager = require(__base + '/src/NodeDependencyManager.js');
 
 var oNodeDependencyManager;
 function restart(){
 	delete oNodeDependencyManager;
 	oNodeDependencyManager = new fnNodeDependencyManager({
-		path:'backend/src/foundation/core/NodeDependenciesMap.json'
+		path:'src/NodeDependenciesMap.json'
 	});
 }
 
 
-describe("Creation of the Dependency Manager", function() {
+describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manager", function() {
 	it("Should read and parse the configuration file for the given path",
    	function() {
    		restart();
-		expect(oNodeDependencyManager).not.toBeNull();
-		expect(oNodeDependencyManager.getConfig()).not.toBeNull();
+		chai.expect(oNodeDependencyManager).to.not.be.null;
+		chai.expect(oNodeDependencyManager.getConfig()).to.not.be.null;
 	});
 
-	it("Should provide the dependency required by its alias " + 
+	it("Should provide the dependency required by its alias " +
 		"and the function should return a Promise" ,
-   	function() {
+   	function(done) {
    		restart();
 
-   		expect(oNodeDependencyManager.getDependency('oExpress')).not.toBeUndefined();
-   		expect(oNodeDependencyManager.getDependency('oExpress') instanceof Promise).toBe(true);
+   		chai.expect(oNodeDependencyManager.getDependency('oExpress')).to.not.be.undefined;
+   		chai.expect(oNodeDependencyManager.getDependency('oExpress') instanceof Promise).to.equal(true);
    		oNodeDependencyManager.getDependency('oExpress').then(function(oExpress){
-   			expect(oExpress).toBe(require('express'));
+   			chai.expect(oExpress).to.equal(require('express'));
    			done();
    		})
 	});
 
 	it("Should fetch the dependencies to initialize a module before actually initializing it",
-   	function() {
+   	function(done) {
    		restart();
-   		spyOn(oNodeDependencyManager,'_fetchDependencyByAlias').andCallThrough();
+   		chai.spy.on(oNodeDependencyManager,'_fetchDependencyByAlias');
 
-   		expect(oNodeDependencyManager.getDependency('oSocketIO')).not.toBeUndefined();
-   		expect(oNodeDependencyManager.getDependency('oSocketIO') instanceof Promise).toBe(true);
+   		chai.expect(oNodeDependencyManager.getDependency('oSocketIO')).to.not.be.undefined;
+   		chai.expect(oNodeDependencyManager.getDependency('oSocketIO') instanceof Promise).to.equal(true);
    		//Loaded because oSocketIO require them
    		oNodeDependencyManager.getDependency('oSocketIO').then(function(){
-   			expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oSocketIO');
-			expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oHTTP');
-			expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oApp');
-			done();
+	   		chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oSocketIO');
+				chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oHTTP');
+				chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oApp');
+				done();
    		});
 	});
 	it("Should provide the dependencies as parameters when they are required for execution",
-	function(){
+	function(done){
 		restart();
 
 		var oSimpleTestDependency = {
@@ -59,36 +60,33 @@ describe("Creation of the Dependency Manager", function() {
 			"name" : "test.dependency",
 			"execute" : true,
 			"executionArguments" : [{
-				"alias" : "oSimpleTestDependency" 
+				"alias" : "oSimpleTestDependency"
 			}]
 		}
-	
-		var fnModuleSpy = jasmine.createSpy();
+
+		var fnModuleSpy = chai.spy();
 		oNodeDependencyManager._requireModule = function(){return fnModuleSpy}
-		
+
 		//Inject dependency on config, so I can load it.
 		oNodeDependencyManager._mConfig['oSimpleTestDependency'] = oSimpleTestDependency;
 		oNodeDependencyManager._mConfig['oDependencyConfig'] = oDependencyConfig;
 
 		oNodeDependencyManager.getDependency('oDependencyConfig').then(function(){
-			expect(fnModuleSpy.callCount).toBe(1);
+		  chai.expect(fnModuleSpy).to.have.been.called.exactly(1);
 			//Provided the fnModuleSpy as argument. All good!
-			expect(fnModuleSpy.calls[0].args[0]).toBe(fnModuleSpy);
+			chai.expect(fnModuleSpy).to.have.been.called.with(fnModuleSpy);
 			done();
 		});
-		
-
-
 	});
-	
+
 	it("Should always provide the same dependency pointer. //Covered by node require cache",
-	function(){
+	function(done){
 		restart();
 		Promise.all([oNodeDependencyManager.getDependency('oHTTP'),oNodeDependencyManager.getDependency('oHTTP')]).then(function(aResults){
-			expect(aResults[0]).toBe(aResults[1]);
+			chai.expect(aResults[0]).to.equal(aResults[1]);
 			done();
 		})
-		
+
 	});
 
-}); 
+});

@@ -1,37 +1,36 @@
-require('../../bootstrap.js');
+require(__dirname + '/bootstrap.js');
 
 function spyRequires(){
 
 	spyOn(Import,'_readdirSync').andCallThrough();
 	spyOn(Import,'_require').andCallThrough();
-	
+
 }
 
 
-describe("Import API",function(){
+describe("src.Import.prototype - Import API",function(){
 
-	it("Should have a map the given alias to the given physical path",
+	it("Should have a map between the given alias to the given physical path",
 	function(){
-		
-
 		var sAlias = 'app.src.files';
 		var sPhysicalPath = 'C:/Application/src';
 
 		Import.mapModulePath(sAlias,sPhysicalPath);
-		
-		expect(Import._getRegisterFromAlias(Import._mPathTree,sAlias.split('.')).path).toBe(sPhysicalPath);
+
+		chai.expect(Import._getRegisterFromAlias(Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
 	});
 
 	it("Should provide a Promise for the module required",
 	function(){
-		Import.module('backend.src.foundation.core.Class').then(function(fnClass){
-			expect(fnClass).not.toBeUndefined();
-			expect(Class).not.toBeUndefined();
+		Import.module('src.Class').then(function(fnClass){
+			chai.expect(fnClass).to.not.equal(undefined);
+			chai.expect(Class).to.not.equal(undefined);
 			done();
 		});
 
 
 	});
+	/* FIXME - Currently there is no use case for this, however this works quite well :)
 	it("The function 'path' should import all files on the given sPath, asynchronously",
 	function(){
 		spyRequires();
@@ -39,8 +38,8 @@ describe("Import API",function(){
 		var sAlias = 'backend.src.wsockets';
 
 		Import.path(sAlias).then(function(aFiles){
-			expect(aFiles).not.toBeUndefined();
+			chai.expect(aFiles).not.to.equalUndefined();
 		});
 
-	});
+	});*/
 })
