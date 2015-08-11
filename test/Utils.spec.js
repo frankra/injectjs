@@ -1,12 +1,12 @@
 require(__dirname + '/bootstrap.js');
 
-define(['backend.src.foundation.core.Utils'],Utils.proxy(function(Utils){
+define(['src.Utils'],function(Utils){
 
    describe("src.Utils.prototype - Creation of the Utils Singleton", function() {
    it("Should be initialized when required, and should be a singleton.",
       function() {
-         expect(Utils).not.toBeUndefined();
-         expect(typeof Utils).toBe('object');
+         chai.expect(Utils).to.not.undefined;
+         chai.expect(typeof Utils).to.equal('object');
    });
 
    });
@@ -15,7 +15,7 @@ define(['backend.src.foundation.core.Utils'],Utils.proxy(function(Utils){
       it("Should have a .proxy function that proxies the fnCallback to the "+
          "oCallbackContext.",
          function() {
-            expect(typeof Utils.proxy).toBe('function');
+            chai.expect(typeof Utils.proxy).to.equal('function');
 
             var sName = 'test';
             var oCallbackContext = {
@@ -28,12 +28,12 @@ define(['backend.src.foundation.core.Utils'],Utils.proxy(function(Utils){
 
             var fnCallme = Utils.proxy(getName,oCallbackContext);
 
-            expect(fnCallme()).toBe(sName);
+            chai.expect(fnCallme()).to.equal(sName);
       });
       it("The Proxy function should also forward the arguments to the proxied " +
          "function.",
          function() {
-            expect(typeof Utils.proxy).toBe('function');
+            chai.expect(typeof Utils.proxy).to.equal('function');
 
             var sName = 'test';
             var oCallbackContext = {
@@ -44,15 +44,11 @@ define(['backend.src.foundation.core.Utils'],Utils.proxy(function(Utils){
                this._name = sName;
             }
 
-            expect(oCallbackContext._name).toBeNull();
+            chai.expect(oCallbackContext._name).to.equal.null;
 
             var fnProxy = Utils.proxy(setName,oCallbackContext,[sName]);
                 fnProxy();
-            expect(oCallbackContext._name).toBe(sName);
+            chai.expect(oCallbackContext._name).to.equal(sName);
       });
-
-
    });
-
-
-},this));
+}.bind(this));

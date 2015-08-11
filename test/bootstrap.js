@@ -8,7 +8,7 @@ require(__base + '/src/Utils.js')();
 
 require(__base + '/src/Import.js');
 	//Configure module path
-Import.mapModulePath('src','src');
+Import.mapModulePath('src','/src');
 
 //Setup Node dependency manager
 var fnNodeDependencyManager = require(__base + '/src/NodeDependencyManager.js');

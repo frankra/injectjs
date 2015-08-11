@@ -1,6 +1,6 @@
 require(__dirname + '/bootstrap.js');
-/*
-define(['src.Class'],Utils.proxy(function(Class){
+
+define(['src.Class'],function(Class){
 
 	describe("src.Class.prototype - Class extension", function() {
 		it("Given I create a new Class by extending the default Class function, " +
@@ -17,7 +17,7 @@ define(['src.Class'],Utils.proxy(function(Class){
 			var sPersonName = 'Frank';
 			var oPerson = new Person(sPersonName);
 
-			expect(oPerson.getName()).toBe(sPersonName);
+			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
 		it("Should create the full path on the environment if required",
@@ -33,7 +33,7 @@ define(['src.Class'],Utils.proxy(function(Class){
 			var sPersonName = 'Frank';
 			var oPerson = new my.test.path.for.Person(sPersonName);
 
-			expect(oPerson.getName()).toBe(sPersonName);
+			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
 		it("Should support chain inheritance",
@@ -50,8 +50,8 @@ define(['src.Class'],Utils.proxy(function(Class){
 			});
 			var oNinja = new Ninja(sNinjaName);
 
-			expect(oNinja.getName()).toBe(sNinjaHasNoName);
-			expect(oNinja.name).toBe(sNinjaName);
+			chai.expect(oNinja.getName()).to.equal(sNinjaHasNoName);
+			chai.expect(oNinja.name).to.equal(sNinjaName);
 		});
 	});
-},this))*/
+}.bind(this))

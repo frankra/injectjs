@@ -21,7 +21,7 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 
 	it("Should provide the dependency required by its alias " +
 		"and the function should return a Promise" ,
-   	function() {
+   	function(done) {
    		restart();
 
    		chai.expect(oNodeDependencyManager.getDependency('oExpress')).to.not.be.undefined;
@@ -33,7 +33,7 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 	});
 
 	it("Should fetch the dependencies to initialize a module before actually initializing it",
-   	function() {
+   	function(done) {
    		restart();
    		chai.spy.on(oNodeDependencyManager,'_fetchDependencyByAlias');
 
@@ -41,14 +41,14 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
    		chai.expect(oNodeDependencyManager.getDependency('oSocketIO') instanceof Promise).to.equal(true);
    		//Loaded because oSocketIO require them
    		oNodeDependencyManager.getDependency('oSocketIO').then(function(){
-   			chai.expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oSocketIO');
-			chai.expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oHTTP');
-			chai.expect(oNodeDependencyManager._fetchDependencyByAlias).toHaveBeenCalledWith('oApp');
-			done();
+	   		chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oSocketIO');
+				chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oHTTP');
+				chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oApp');
+				done();
    		});
 	});
 	it("Should provide the dependencies as parameters when they are required for execution",
-	function(){
+	function(done){
 		restart();
 
 		var oSimpleTestDependency = {
@@ -72,15 +72,15 @@ describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manag
 		oNodeDependencyManager._mConfig['oDependencyConfig'] = oDependencyConfig;
 
 		oNodeDependencyManager.getDependency('oDependencyConfig').then(function(){
-			chai.expect(fnModuleSpy.callCount).to.equal(1);
+		  chai.expect(fnModuleSpy).to.have.been.called.exactly(1);
 			//Provided the fnModuleSpy as argument. All good!
-			chai.expect(fnModuleSpy.calls[0].args[0]).to.equal(fnModuleSpy);
+			chai.expect(fnModuleSpy).to.have.been.called.with(fnModuleSpy);
 			done();
 		});
 	});
 
 	it("Should always provide the same dependency pointer. //Covered by node require cache",
-	function(){
+	function(done){
 		restart();
 		Promise.all([oNodeDependencyManager.getDependency('oHTTP'),oNodeDependencyManager.getDependency('oHTTP')]).then(function(aResults){
 			chai.expect(aResults[0]).to.equal(aResults[1]);
