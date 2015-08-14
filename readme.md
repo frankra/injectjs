@@ -1,6 +1,9 @@
-# InjectJS another NodeJS Framework meant for dependency management and other cool stuff.
+# InjectJS another NodeJS Framework meant for dependency management and other cool stuff
 
 [![wercker status](https://app.wercker.com/status/9cb0bbb62083a72a716d7ed6591e3c87/m "wercker status")](https://app.wercker.com/project/bykey/9cb0bbb62083a72a716d7ed6591e3c87)
+
+## For TDD use
+`npm test`
 
 ## GIT Working model
 https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow

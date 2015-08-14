@@ -1,8 +1,8 @@
-require('../../bootstrap.js');
+require(__dirname + '/bootstrap.js');
 
-define(['backend.src.foundation.core.Class'],Utils.proxy(function(Class){
+define(['src.Class'],function(Class){
 
-	describe("Class extension", function() {
+	describe("src.Class.prototype - Class extension", function() {
 		it("Given I create a new Class by extending the default Class function, " +
 	   	   "then I expect this new Class to be set on the global environment",
 	   	function() {
@@ -13,11 +13,11 @@ define(['backend.src.foundation.core.Class'],Utils.proxy(function(Class){
 				getName: function(){
 					return this.name;
 				}
-			});	    
+			});
 			var sPersonName = 'Frank';
 			var oPerson = new Person(sPersonName);
 
-			expect(oPerson.getName()).toBe(sPersonName);
+			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
 		it("Should create the full path on the environment if required",
@@ -29,11 +29,11 @@ define(['backend.src.foundation.core.Class'],Utils.proxy(function(Class){
 				getName: function(){
 					return this.name;
 				}
-			});	    
+			});
 			var sPersonName = 'Frank';
 			var oPerson = new my.test.path.for.Person(sPersonName);
 
-			expect(oPerson.getName()).toBe(sPersonName);
+			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
 		it("Should support chain inheritance",
@@ -47,11 +47,11 @@ define(['backend.src.foundation.core.Class'],Utils.proxy(function(Class){
 				getName: function(){
 					return sNinjaHasNoName;
 				}
-			});	    
+			});
 			var oNinja = new Ninja(sNinjaName);
 
-			expect(oNinja.getName()).toBe(sNinjaHasNoName);
-			expect(oNinja.name).toBe(sNinjaName);
+			chai.expect(oNinja.getName()).to.equal(sNinjaHasNoName);
+			chai.expect(oNinja.name).to.equal(sNinjaName);
 		});
-	}); 
-},this))
+	});
+}.bind(this))
