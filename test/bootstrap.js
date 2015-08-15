@@ -1,7 +1,7 @@
 
 //Configure base
 var sCurrentPath = __dirname;
-global.__base = sCurrentPath.substr(0,sCurrentPath.lastIndexOf('\\')); //Navigate one folder up
+var __base = global.__base = sCurrentPath.substr(0,sCurrentPath.lastIndexOf('\\')); //Navigate one folder up
 
 //Wercker is kaput
 console.log(__base);
