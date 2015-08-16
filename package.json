@@ -8,7 +8,7 @@
   },
   "scripts": {
     "tdd": "mocha -w test/**/*spec.js",
-    "tdd": "mocha test/**/*spec.js"
+    "test": "mocha test/**/*spec.js"
   },
   "repository": {
     "type": "git",
