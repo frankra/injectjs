@@ -1,4 +1,4 @@
-require(__dirname + '/bootstrap.js');
+require('./bootstrap.js');
 
 describe("src.define.prototype - Creation define", function() {
 

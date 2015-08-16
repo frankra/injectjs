@@ -1,12 +1,15 @@
 (function(){
 	"use strict";
 
+
+
 	function Import(){
 		this._mPathTree = {};
 		this._mRequiredModules = {};
 		this._mRequiredPaths = {};
 
 		this._oFS = require('fs');
+		this._base = require('../BaseDir.js');
 	};
 
 	Import.prototype.mapModulePath = function(sAlias,sPhysicalPath){
@@ -56,7 +59,7 @@
 		var sDotsReplaced = sPath.replace(/\./gi,'/');
 
 		var sWithJSSuffix = bAddJSSuffix ? sDotsReplaced.concat('.js') : sDotsReplaced;
-		var sWithBasePrefix = global.__base + sWithJSSuffix;
+		var sWithBasePrefix = this._base + sWithJSSuffix;
 		return sWithBasePrefix
 	}
 

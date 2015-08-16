@@ -1,4 +1,4 @@
-require(__dirname + '/bootstrap.js');
+require('./bootstrap.js');
 
 define(['src.Class'],function(Class){
 

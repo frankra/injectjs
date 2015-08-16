@@ -1,8 +1,5 @@
 
-//Configure base
-var sCurrentPath = __dirname;
-var __base = global.__base = sCurrentPath.substr(0,sCurrentPath.lastIndexOf('\\')); //Navigate one folder up
-
+var __base = require('../BaseDir.js');
 //Load test dependencies
 require(__base + '/src/Utils.js')();
 

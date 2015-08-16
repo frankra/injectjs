@@ -1,4 +1,5 @@
-require(__dirname + '/bootstrap.js');
+require('./bootstrap.js');
+var __base = require('../BaseDir.js');
 
 var fnNodeDependencyManager = require(__base + '/src/NodeDependencyManager.js');
 
