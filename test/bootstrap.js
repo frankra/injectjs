@@ -3,9 +3,6 @@
 var sCurrentPath = __dirname;
 var __base = global.__base = sCurrentPath.substr(0,sCurrentPath.lastIndexOf('\\')); //Navigate one folder up
 
-//Wercker is kaput
-throw new Error("__base = " + __base + "    global.__base = " + global.__base )
-
 //Load test dependencies
 require(__base + '/src/Utils.js')();
 
