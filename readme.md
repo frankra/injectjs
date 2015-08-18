@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/CodingDonuts/injectjs.svg?branch=master)](https://travis-ci.org/CodingDonuts/injectjs)
 ## For TDD use
-`npm tdd`
+`npm run-script tdd`
 
 ## GIT Working model
 https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow
