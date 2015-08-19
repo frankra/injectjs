@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Frankrafael/injectjs.git"
+    "url": "git+https://github.com/CodingDonuts/injectjs.git"
   },
   "author": "Rafael Frank",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Frankrafael/injectjs/issues"
+    "url": "https://github.com/CodingDonuts/injectjs/issues"
   },
-  "homepage": "https://github.com/Frankrafael/injectjs#readme",
+  "homepage": "https://github.com/CodingDonuts/injectjs#readme",
   "devDependencies": {
     "chai": "^3.2.0",
     "chai-spies": "^0.7.0",
