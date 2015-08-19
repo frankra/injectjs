@@ -1,6 +1,6 @@
 {
   "name": "node-injectjs",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A NodeJS Dependency Management Framework",
   "main": "core.js",
   "directories": {
@@ -11,7 +11,7 @@
     "test": "mocha test/**/*spec.js"
   },
   "bin":{
-    "injectjs" : "src/client"
+    "injectjs" : "bin/client"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "socket.io": "^1.3.5"
   },
   "files": [
+    "bin",
     "src"
   ]
 }
