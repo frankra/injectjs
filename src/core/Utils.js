@@ -8,7 +8,7 @@ module.exports = function(fnResolve){
 			return fnToBeProxied.apply(oProxyContext,aArguments ? Array.prototype.slice.call(arguments).concat(aArguments) : arguments);
 		}
 	},
-	
+
 	global.Utils = new Utils();
 
 	fnResolve && fnResolve(global.Utils);

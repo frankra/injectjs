@@ -10,46 +10,40 @@ function restart(){
 		path:'test/core/TESTNodeDependenciesMap.json'
 	});
 }
-
-
 describe("src.core.NodeDependencyManager.prototype - Creation of the Dependency Manager", function() {
-	it("Should read and parse the configuration file for the given path",
-   	function() {
-   		restart();
+	it("Should read and parse the configuration file for the given path",function() {
+			restart();
 		chai.expect(oNodeDependencyManager).to.not.be.null;
 		chai.expect(oNodeDependencyManager.getConfig()).to.not.be.null;
 	});
 
 	it("Should provide the dependency required by its alias " +
-		"and the function should return a Promise" ,
-   	function(done) {
-   		restart();
+		"and the function should return a Promise" ,function(done) {
+			restart();
 
-   		chai.expect(oNodeDependencyManager.getDependency('oExpress')).to.not.be.undefined;
-   		chai.expect(oNodeDependencyManager.getDependency('oExpress') instanceof Promise).to.equal(true);
-   		oNodeDependencyManager.getDependency('oExpress').then(function(oExpress){
-   			chai.expect(oExpress).to.equal(require('express'));
-   			done();
-   		})
+			chai.expect(oNodeDependencyManager.getDependency('oExpress')).to.not.be.undefined;
+			chai.expect(oNodeDependencyManager.getDependency('oExpress') instanceof Promise).to.equal(true);
+			oNodeDependencyManager.getDependency('oExpress').then(function(oExpress){
+				chai.expect(oExpress).to.equal(require('express'));
+				done();
+			})
 	});
 
-	it("Should fetch the dependencies to initialize a module before actually initializing it",
-   	function(done) {
-   		restart();
-   		chai.spy.on(oNodeDependencyManager,'_fetchDependencyByAlias');
+	it("Should fetch the dependencies to initialize a module before actually initializing it",function(done) {
+			restart();
+			chai.spy.on(oNodeDependencyManager,'_fetchDependencyByAlias');
 
-   		chai.expect(oNodeDependencyManager.getDependency('oSocketIO')).to.not.be.undefined;
-   		chai.expect(oNodeDependencyManager.getDependency('oSocketIO') instanceof Promise).to.equal(true);
-   		//Loaded because oSocketIO require them
-   		oNodeDependencyManager.getDependency('oSocketIO').then(function(){
-	   		chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oSocketIO');
+			chai.expect(oNodeDependencyManager.getDependency('oSocketIO')).to.not.be.undefined;
+			chai.expect(oNodeDependencyManager.getDependency('oSocketIO') instanceof Promise).to.equal(true);
+			//Loaded because oSocketIO require them
+			oNodeDependencyManager.getDependency('oSocketIO').then(function(){
+				chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oSocketIO');
 				chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oHTTP');
 				chai.expect(oNodeDependencyManager._fetchDependencyByAlias).to.have.been.called.with('oApp');
 				done();
-   		});
+			});
 	});
-	it("Should provide the dependencies as parameters when they are required for execution",
-	function(done){
+	it("Should provide the dependencies as parameters when they are required for execution",function(done){
 		restart();
 
 		var oSimpleTestDependency = {
@@ -80,14 +74,12 @@ describe("src.core.NodeDependencyManager.prototype - Creation of the Dependency 
 		});
 	});
 
-	it("Should always provide the same dependency pointer. //Covered by node require cache",
-	function(done){
+	it("Should always provide the same dependency pointer. //Covered by node require cache",function(done){
 		restart();
 		Promise.all([oNodeDependencyManager.getDependency('oHTTP'),oNodeDependencyManager.getDependency('oHTTP')]).then(function(aResults){
 			chai.expect(aResults[0]).to.equal(aResults[1]);
 			done();
 		})
-
 	});
 
 });

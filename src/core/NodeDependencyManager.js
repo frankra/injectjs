@@ -29,9 +29,9 @@
 			throw new Error('Dependency with alias: "'+ sAlias +'" is not registered, please check dependency map on: ' + this._sFilePath);
 		}
 	};
-	
+
 	NodeDependencyManager.prototype._fetchDependencyByAlias = function(sAlias){
-		
+
 		if (!this._mLoadedDependencies.hasOwnProperty(sAlias)){
 			var oDependencyConfig = this._mConfig[sAlias];
 			var fnModule = this._requireModule(oDependencyConfig.name);
@@ -41,7 +41,7 @@
 
 				if (oDependencyConfig.hasOwnProperty('executionArguments')){
 					aLoadedArguments = this._loadRequiredArguments(oDependencyConfig.executionArguments);
-				
+
 				}
 				if (oDependencyConfig.hasOwnProperty('executionPath')){
 					this._mLoadedDependencies[sAlias] = fnModule[oDependencyConfig.executionPath].apply(this,aLoadedArguments);
@@ -60,7 +60,7 @@
 		return require(sModuleName); //Sync
 	};
 
-    NodeDependencyManager.prototype._loadRequiredArguments = function(aRequiredArguments){
+	 NodeDependencyManager.prototype._loadRequiredArguments = function(aRequiredArguments){
 		var aLoadedArguments = [];
 
 		for(var i = 0, ii = aRequiredArguments.length; i < ii; i++){
@@ -71,9 +71,8 @@
 			)
 		}
 		return aLoadedArguments;
-    }
+	}
 
 	module.exports = NodeDependencyManager;
 
 }());
-

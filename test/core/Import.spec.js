@@ -10,8 +10,7 @@ function spyRequires(){
 
 describe("src.core.Import.prototype - Import API",function(){
 
-	it("Should have a map between the given alias to the given physical path",
-	function(){
+	it("Should have a map between the given alias to the given physical path",function(){
 		var sAlias = 'app.src.core.files';
 		var sPhysicalPath = 'C:/Application/src';
 
@@ -20,15 +19,12 @@ describe("src.core.Import.prototype - Import API",function(){
 		chai.expect(Import._getRegisterFromAlias(Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
 	});
 
-	it("Should provide a Promise for the module required",
-	function(){
+	it("Should provide a Promise for the module required",function(){
 		Import.module('src.core.Class').then(function(fnClass){
 			chai.expect(fnClass).to.not.equal(undefined);
 			chai.expect(Class).to.not.equal(undefined);
 			done();
 		});
-
-
 	});
 	/* FIXME - Currently there is no use case for this, however this works quite well :)
 	it("The function 'path' should import all files on the given sPath, asynchronously",

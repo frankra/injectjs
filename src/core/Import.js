@@ -1,8 +1,6 @@
 (function(){
 	"use strict";
 
-
-
 	function Import(){
 		this._mPathTree = {};
 		this._mRequiredModules = {};
