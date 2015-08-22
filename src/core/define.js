@@ -1,6 +1,6 @@
 module.exports = function(NodeDependencyManager,Import){
 	'use strict';
-	
+
 	return function(aDependencies,fnImplementation){
 		var oInitializationPromise = null;
 		var aModulePromises = [];
@@ -20,8 +20,8 @@ module.exports = function(NodeDependencyManager,Import){
 		Promise.all(aModulePromises).then(function(aModules){
 			fnImplementation.apply(fnImplementation,aModules);
 		}).catch(function(){
-			console.log('define.js [ln23]: Error while executing fnImplementation: ',arguments);
+			console.log('Error while executing fnImplementation: ',arguments);
 		});
-		
+
 	};
 };

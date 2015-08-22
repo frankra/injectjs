@@ -1,20 +1,20 @@
 
-var __base = require('../BaseDir.js');
+var __base = require('../../BaseDir.js');
 //Load test dependencies
-require(__base + '/src/Utils.js')();
+require(__base + '/src/core/Utils.js')();
 
-require(__base + '/src/Import.js');
+require(__base + '/src/core/Import.js');
 	//Configure module path
-Import.mapModulePath('src','/src');
+Import.mapModulePath('src.core','/src.core');
 
 //Setup Node dependency manager
-var fnNodeDependencyManager = require(__base + '/src/NodeDependencyManager.js');
+var fnNodeDependencyManager = require(__base + '/src/core/NodeDependencyManager.js');
 	global.NodeDependencyManager = new fnNodeDependencyManager({
-			path:'src/NodeDependenciesMap.json'
+			path:'test/core/TESTNodeDependenciesMap.json'
 		});
 
 //Start define
-global.define = require(__base + '/src/define.js')(NodeDependencyManager,Import);
+global.define = require(__base + '/src/core/define.js')(NodeDependencyManager,Import);
 
 //Load test Framework
 global.chai = require('chai');

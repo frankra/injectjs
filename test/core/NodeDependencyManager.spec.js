@@ -1,18 +1,18 @@
 require('./bootstrap.js');
-var __base = require('../BaseDir.js');
+var __base = require('../../BaseDir.js');
 
-var fnNodeDependencyManager = require(__base + '/src/NodeDependencyManager.js');
+var fnNodeDependencyManager = require(__base + '/src/core/NodeDependencyManager.js');
 
 var oNodeDependencyManager;
 function restart(){
 	delete oNodeDependencyManager;
 	oNodeDependencyManager = new fnNodeDependencyManager({
-		path:'src/NodeDependenciesMap.json'
+		path:'test/core/TESTNodeDependenciesMap.json'
 	});
 }
 
 
-describe("src.NodeDependencyManager.prototype - Creation of the Dependency Manager", function() {
+describe("src.core.NodeDependencyManager.prototype - Creation of the Dependency Manager", function() {
 	it("Should read and parse the configuration file for the given path",
    	function() {
    		restart();

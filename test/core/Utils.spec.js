@@ -1,8 +1,8 @@
 require('./bootstrap.js');
 
-define(['src.Utils'],function(Utils){
+define(['src.core.Utils'],function(Utils){
 
-   describe("src.Utils.prototype - Creation of the Utils Singleton", function() {
+   describe("src.core.Utils.prototype - Creation of the Utils Singleton", function() {
    it("Should be initialized when required, and should be a singleton.",
       function() {
          chai.expect(Utils).to.not.undefined;
@@ -11,7 +11,7 @@ define(['src.Utils'],function(Utils){
 
    });
 
-   describe("src.Utils.prototype - Utils Singleton - API", function() {
+   describe("src.core.Utils.prototype - Utils Singleton - API", function() {
       it("Should have a .proxy function that proxies the fnCallback to the "+
          "oCallbackContext.",
          function() {
