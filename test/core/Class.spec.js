@@ -1,8 +1,8 @@
 require('./bootstrap.js');
 
-define(['src.Class'],function(Class){
+define(['src.core.Class'],function(Class){
 
-	describe("src.Class.prototype - Class extension", function() {
+	describe("src.core.Class.prototype - Class extension", function() {
 		it("Given I create a new Class by extending the default Class function, " +
 	   	   "then I expect this new Class to be set on the global environment",
 	   	function() {
