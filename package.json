@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "tdd": "mocha -w test/**/*spec.js",
+    "testrunner:bin": "mocha -w test_bin/**/*spec.js",
+    "testrunner:src": "mocha -w test/**/*spec.js",
     "test": "mocha test/**/*spec.js"
   },
   "bin": {
