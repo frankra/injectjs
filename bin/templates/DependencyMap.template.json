@@ -1,0 +1,10 @@
+{
+    "dependencyAlias" :{
+        "name" : "String, actual name of the dependency. e.g.: 'express' ",
+        "execute" : "boolean, if should or not be executed e.g.: require('express')() <- executed",
+        "executionPath": "String, path to be executed. e.g.: require('http').Server(), 'Server' is the Execution path",
+        "executionArguments" : [{
+            "alias" : "String, dependency to be provided as parameter on execution."
+        }],
+    }
+}
