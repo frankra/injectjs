@@ -1,4 +1,4 @@
-require('./bootstrap.js');
+require('./bootstrap.js')();
 
 function spyRequires(){
 

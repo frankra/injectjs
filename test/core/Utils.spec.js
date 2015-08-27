@@ -1,4 +1,4 @@
-require('./bootstrap.js');
+require('./bootstrap.js')();
 
 define(['src.core.Utils'],function(Utils){
 

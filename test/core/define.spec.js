@@ -1,4 +1,4 @@
-require('./bootstrap.js');
+require('./bootstrap.js')();
 
 describe("src.core.define.prototype - Creation define", function() {
 
