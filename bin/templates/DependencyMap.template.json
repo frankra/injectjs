@@ -5,6 +5,6 @@
         "executionPath": "String, path to be executed. e.g.: require('http').Server(), 'Server' is the Execution path",
         "executionArguments" : [{
             "alias" : "String, dependency to be provided as parameter on execution."
-        }],
+        }]
     }
 }
