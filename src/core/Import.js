@@ -1,15 +1,13 @@
 (function(){
 	"use strict";
 
-
-
 	function Import(){
 		this._mPathTree = {};
 		this._mRequiredModules = {};
 		this._mRequiredPaths = {};
 
 		this._oFS = require('fs');
-		this._base = require('../BaseDir.js');
+		this._base = require('../../BaseDir.js');
 	};
 
 	Import.prototype.mapModulePath = function(sAlias,sPhysicalPath){
@@ -42,7 +40,7 @@
 		}else if (oNavigator.hasOwnProperty('alias')){
 			return oNavigator;
 		}else {
-			throw new Error('Import.prototype._getRegisterFromAlias: Attribute "path" not found.');
+			throw new Error('Import.prototype._getRegisterFromAlias: Attribute "path" not found.' + sAliasParts.join('.'));
 		}
 	};
 	Import.prototype._assembleRequirePath = function(sRequiredAlias,bAddJSSuffix){

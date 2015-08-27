@@ -1,8 +1,7 @@
 # InjectJS another NodeJS Framework meant for dependency management and other cool stuff
 
-[![wercker status](https://app.wercker.com/status/9cb0bbb62083a72a716d7ed6591e3c87/m "wercker status")](https://app.wercker.com/project/bykey/9cb0bbb62083a72a716d7ed6591e3c87)
+[![Build Status](https://travis-ci.org/CodingDonuts/injectjs.svg?branch=master)](https://travis-ci.org/CodingDonuts/injectjs) [![Coverage Status](https://coveralls.io/repos/CodingDonuts/injectjs/badge.svg?branch=develop&service=github)](https://coveralls.io/github/CodingDonuts/injectjs?branch=develop)
 
-[![Build Status](https://travis-ci.org/CodingDonuts/injectjs.svg?branch=master)](https://travis-ci.org/CodingDonuts/injectjs)
 ## For TDD use
 `npm run-script tdd`
 

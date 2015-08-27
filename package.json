@@ -2,12 +2,10 @@
   "name": "node-injectjs",
   "version": "0.0.4",
   "description": "A NodeJS Dependency Management Framework",
-  "main": "core.js",
-  "directories": {
-    "test": "test"
-  },
+  "main": "src/core/Core.js",
   "scripts": {
-    "tdd": "mocha -w test/**/*spec.js",
+    "testrunner:bin": "mocha -w test_bin/**/*spec.js",
+    "testrunner:src": "mocha -w test/**/*spec.js",
     "test": "mocha test/**/*spec.js"
   },
   "bin": {
