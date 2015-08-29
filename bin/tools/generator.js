@@ -13,7 +13,7 @@ module.exports = function(sPath){
 
 	for (var sTemplatePath in mTemplates){
 		var sFilePath = sPath + mTemplates[sTemplatePath];
-		oFS.readFile(sTemplatePath,'utf8',_getWriteFromTemplateCallback(sTemplatePath,sFilePath));
+		oFS.readFile(__dirname  + sTemplatePath,'utf8',_getWriteFromTemplateCallback(sTemplatePath,sFilePath));
 	}
 
 	function _getWriteFromTemplateCallback(sTemplatePath,sFilePath){
