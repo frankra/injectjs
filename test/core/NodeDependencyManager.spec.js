@@ -7,7 +7,7 @@ var oNodeDependencyManager;
 function restart(){
 	delete oNodeDependencyManager;
 	oNodeDependencyManager = new fnNodeDependencyManager({
-		path:'test/core/TESTNodeDependenciesMap.json'
+		path:'test/core/node_dependencies.config.json'
 	});
 }
 describe("src.core.NodeDependencyManager.prototype - Creation of the Dependency Manager", function() {

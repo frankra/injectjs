@@ -1,8 +1,8 @@
 
 var fnCore;
-var sPath = require('../../BaseDir.js');
+
 function reset(){
-    fnCore = require('../../src/core/Core.js')(sPath);
+    fnCore = require('../../src/core/Core.js')(__dirname);
 }
 
 describe("src.core.Core.prototype - Bootstrap", function() {
