@@ -1,2 +1,4 @@
 node_modules/
 npm-debug.log
+/injectjs.config.json
+/node_dependencies.config.json

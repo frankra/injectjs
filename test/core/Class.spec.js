@@ -1,11 +1,10 @@
-require('./bootstrap.js');
+require('./bootstrap.js')();
 
-define(['src.Class'],function(Class){
+define(['src.core.Class'],function(Class){
 
-	describe("src.Class.prototype - Class extension", function() {
+	describe("src.core.Class.prototype - Class extension", function() {
 		it("Given I create a new Class by extending the default Class function, " +
-	   	   "then I expect this new Class to be set on the global environment",
-	   	function() {
+		   "then I expect this new Class to be set on the global environment",function() {
 			Class.extend('Person',{
 				init: function(sName){
 					this.name = sName;
@@ -20,8 +19,7 @@ define(['src.Class'],function(Class){
 			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
-		it("Should create the full path on the environment if required",
-	   	function() {
+		it("Should create the full path on the environment if required",function() {
 			Class.extend('my.test.path.for.Person',{
 				init: function(sName){
 					this.name = sName;
@@ -36,10 +34,9 @@ define(['src.Class'],function(Class){
 			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
-		it("Should support chain inheritance",
-	   	function() {
-	   		var sNinjaHasNoName	= "I am a Ninja, I won't tell you my name.";
-	   		var sNinjaName = "Frank";
+		it("Should support chain inheritance",function() {
+			var sNinjaHasNoName	= "I am a Ninja, I won't tell you my name.";
+			var sNinjaName = "Frank";
 			my.test.path.for.Person.extend('Ninja',{
 				init: function(sName){
 					this.name = sName;
@@ -54,4 +51,4 @@ define(['src.Class'],function(Class){
 			chai.expect(oNinja.name).to.equal(sNinjaName);
 		});
 	});
-}.bind(this))
+}.bind(this));

@@ -2,16 +2,14 @@
   "name": "node-injectjs",
   "version": "0.0.4",
   "description": "A NodeJS Dependency Management Framework",
-  "main": "core.js",
-  "directories": {
-    "test": "test"
-  },
+  "main": "src/core/Core.js",
   "scripts": {
-    "tdd": "mocha -w test/**/*spec.js",
+    "testrunner:bin": "mocha -w test_bin/**/*spec.js",
+    "testrunner:src": "mocha -w test/**/*spec.js",
     "test": "mocha test/**/*spec.js"
   },
-  "bin":{
-    "injectjs" : "bin/client"
+  "bin": {
+    "injectjs": "bin/client"
   },
   "repository": {
     "type": "git",
@@ -24,14 +22,16 @@
   },
   "homepage": "https://github.com/CodingDonuts/injectjs#readme",
   "devDependencies": {
+    "body-parser": "^1.13.1",
     "chai": "^3.2.0",
     "chai-spies": "^0.7.0",
-    "mocha": "^2.2.5",
-    "body-parser": "^1.13.1",
     "connect-mongo": "^0.8.1",
+    "coveralls": "^2.11.4",
     "express": "^4.12.3",
     "express-session": "^1.11.3",
     "grunt-exec": "^0.4.6",
+    "istanbul": "^0.3.18",
+    "mocha": "^2.2.5",
     "mongodb": "^2.0.33",
     "node-gcm": "^0.9.15",
     "socket.io": "^1.3.5"

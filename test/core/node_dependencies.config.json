@@ -1,7 +1,7 @@
 {
 	"oExpress": {
 		"name" : "express",
-		"execute" : false		
+		"execute" : false
 	},
 	"oApp": {
 		"name" : "express",
@@ -40,16 +40,14 @@
 	"oGCM": {
 		"name" : "node-gcm",
 		"useFactory" : false,
-		"execute" : false		
+		"execute" : false
 	},
 	"oFS": {
 		"name" : "fs",
-		"execute" : false		
+		"execute" : false
 	},
 	"oMongoDB": {
 		"name" : "mongodb",
-		"execute" : false		
+		"execute" : false
 	}
 }
-
-
