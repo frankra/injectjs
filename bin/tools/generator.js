@@ -7,8 +7,8 @@ module.exports = function(sPath){
 
 	var mTemplates = {
 		/*sTemplatePath : sFileName*/
-		'bin/templates/DependencyMap.template.json' : '\\node_dependencies.config.json',
-		'bin/templates/InjectJSConfig.template.json' : '\\injectjs.config.json'
+		'/templates/DependencyMap.template.json' : '\\node_dependencies.config.json',
+		'/templates/InjectJSConfig.template.json' : '\\injectjs.config.json'
 	};
 
 	for (var sTemplatePath in mTemplates){
