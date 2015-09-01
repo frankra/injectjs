@@ -7,7 +7,7 @@
 		this._mRequiredPaths = {};
 
 		this._oFS = require('fs');
-		this._base = require('../../BaseDir.js');
+		this._base = process.cwd();
 	};
 
 	Import.prototype.mapModulePath = function(sAlias,sPhysicalPath){
