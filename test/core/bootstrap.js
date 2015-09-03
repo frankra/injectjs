@@ -1,5 +1,5 @@
 module.exports = function(){
-	var __base = require('../../BaseDir.js');
+	var __base = process.cwd();
 	//Load test dependencies
 	require(__base + '/src/core/Core.js')(__dirname);
 
