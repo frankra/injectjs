@@ -1,15 +1,14 @@
 module.exports = function(fnResolve){
 	"use strict";
 
-	function Class(){}
+	function Class(){};
 
-	Class.prototype.init = function() {};
+	Class.prototype.init = function(){};
 
 	Class.extend = function(sNamespace,oPrototype){
 
 		function fnClass(){
 			this.init.apply(this,arguments);
-
 		};
 
 		fnClass.prototype = oPrototype;
@@ -17,13 +16,11 @@ module.exports = function(fnResolve){
 
 		fnClass.extend = this.extend;
 
-		for(var vAttribute in this.prototype){
-
-			if(!oPrototype.hasOwnProperty(vAttribute)){
-				fnClass.prototype[vAttribute] = this.prototype[vAttribute];
+		Object.keys(this.prototype).forEach(function(sAttribute){
+			if(!oPrototype.hasOwnProperty(sAttribute)){
+				fnClass.prototype[sAttribute] = this.prototype[sAttribute];
 			}
-
-		}
+		});
 		var aSplittedNamespace = sNamespace.split('.');
 		var oNavigator = global;
 		for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){
@@ -32,11 +29,10 @@ module.exports = function(fnResolve){
 			}else {
 				oNavigator = (oNavigator[aSplittedNamespace[i]] = {});
 			}
-
-		}
-
+		};
 		oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = fnClass;
 	}
+
 	global.Class = Class;
 	fnResolve ? fnResolve(Class) : null;
 }
