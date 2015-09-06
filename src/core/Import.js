@@ -70,33 +70,7 @@
 		},this));
 	};
 
-	Import.prototype.path = function(sRequiredAlias){
-		var sRequirePath = this._assembleRequirePath(sRequiredAlias,false);
-		var sFixSlashes = sRequirePath.replace(/\//gi,'\\');
 
-		var aDirFiles = this._readdirSync(sFixSlashes) || [];
-
-		var sFileName;
-		var aFilePromises = [];
-		for (var i = 0, ii = aDirFiles.length; i < ii; i++){
-			sFileName = aDirFiles[i].split('.')[0]; //remove '.js'
-			aFilePromises.push(
-				new Promise(Utils.proxy(
-					function(fnResolve,fnReject){
-						this._require(
-							this._prepareRequirePath(
-								sRequiredAlias.concat('.').concat(sFileName),
-								true
-							).replace(/\\/gi,'/'),
-							this._resolveFileNameAndContent(sFileName,fnResolve)
-						);
-					},this)
-				)
-			);
-		}
-
-		return Promise.all(aFilePromises);
-	};
 
 	Import.prototype._resolveFileNameAndContent = function(sFileName,fnResolvePromise){
 		return function(fnRequiredContent){
