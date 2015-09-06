@@ -1,6 +1,6 @@
 require('./bootstrap.js')();
 
-define(['src.core.Class'],function(Class){
+define(['injectjs.core.Class'],function(Class){
 
 	describe("src.core.Class.prototype - Class extension", function() {
 		it("Given I create a new Class by extending the default Class function, " +

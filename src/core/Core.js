@@ -4,7 +4,7 @@ module.exports = function(sPath){
 
 	require(__dirname + '/Import.js');
 		//Configure module path
-	Import.mapModulePath('src.core','/src/core');
+	Import.mapModulePath('injectjs.core','/src/core');
 
 	//Setup Node dependency manager
 	var fnNodeDependencyManager = require(__dirname + '/NodeDependencyManager.js');
