@@ -8,6 +8,9 @@ module.exports = function(fnResolve){
 	Class.extend = function(sNamespace,oPrototype){
 
 		function fnClass(){
+			if (!(this instanceof fnClass)){
+				throw new Error("Constructor called as a function. You forgot the 'new' keyword.");
+			}
 			this.init.apply(this,arguments);
 		};
 
@@ -20,7 +23,7 @@ module.exports = function(fnResolve){
 			if(!oPrototype.hasOwnProperty(sAttribute)){
 				fnClass.prototype[sAttribute] = this.prototype[sAttribute];
 			}
-		});
+		}.bind(this));
 		var aSplittedNamespace = sNamespace.split('.');
 		var oNavigator = global;
 		for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){

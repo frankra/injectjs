@@ -50,5 +50,16 @@ define(['injectjs.core.Class'],function(Class){
 			chai.expect(oNinja.getName()).to.equal(sNinjaHasNoName);
 			chai.expect(oNinja.name).to.equal(sNinjaName);
 		});
+
+		it("If I forget the 'new' keyword an error should happen, as this would " +
+		"run the constructor as a function in the global scope",function() {
+			Class.extend('test',{
+			});
+
+			chai.expect(function(){
+				test()
+			}).to.throw("Constructor called as a function. You forgot the 'new' keyword.");
+
+		});
 	});
 }.bind(this));
