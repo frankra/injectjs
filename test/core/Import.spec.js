@@ -1,10 +1,8 @@
 require('./bootstrap.js')();
 
 function spyRequires(){
-
-	spyOn(Import,'_readdirSync').andCallThrough();
-	spyOn(Import,'_require').andCallThrough();
-
+	chai.spy.on(Import,'_readdirSync');
+	chai.spy.on(Import,'_require');
 }
 
 
@@ -26,16 +24,15 @@ describe("src.core.Import.prototype - Import API",function(){
 			done();
 		});
 	});
-	/* FIXME - Currently there is no use case for this, however this works quite well :)
-	it("The function 'path' should import all files on the given sPath, asynchronously",
-	function(){
-		spyRequires();
 
-		var sAlias = 'backend.src.core.wsockets';
+	it("The function 'path' should import all files on the given sPath, asynchronously",function(){
+		spyRequires();
+		Import.mapModulePath('test','/test/core');
+		var sAlias = 'test.test_import_path';
 
 		Import.path(sAlias).then(function(aFiles){
 			chai.expect(aFiles).not.to.equalUndefined();
 		});
 
-	});*/
+	});
 })
