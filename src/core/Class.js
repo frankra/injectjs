@@ -38,20 +38,23 @@ module.exports = function(fnResolve){
 			}
 		});
 		//Navigate to the given sNamespace if existent, else create it.
-		var aSplittedNamespace = sNamespace.split('.');
-		var oNavigator = global;
-		for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){
-			if (oNavigator.hasOwnProperty(aSplittedNamespace[i])){
-				oNavigator = oNavigator[aSplittedNamespace[i]];
-			}else {
-				oNavigator = (oNavigator[aSplittedNamespace[i]] = {});
-			}
-		};
-		//Set the constructor of the class to the last node of the namespace
-		oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = fnClass;
+		_createNamespace(sNamespace, fnClass);
 	}
-	//Add the Class to the global variable
-	global.Class = Class;
+	//Add the Class to the injectjs namespace
+	_createNamespace('injectjs.core.Class',Class);
 	//If this was requested through the dependency management engine, resolve it, otherwise do nothing
 	fnResolve && fnResolve(Class);
-}
+};
+function _createNamespace(sNamespace, fnConstructor){
+	var aSplittedNamespace = sNamespace.split('.');
+	var oNavigator = global;
+	for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){
+		if (oNavigator.hasOwnProperty(aSplittedNamespace[i])){
+			oNavigator = oNavigator[aSplittedNamespace[i]];
+		}else {
+			oNavigator = (oNavigator[aSplittedNamespace[i]] = {});
+		}
+	};
+	//Set the constructor of the class to the last node of the namespace
+	oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = fnConstructor;
+};
