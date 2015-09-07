@@ -34,6 +34,14 @@ define(['injectjs.core.Class'],function(Class){
 			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
+		it("Should not override other constructors on the same namespace",function() {
+			Class.extend('my.test.path.for.Person',{});
+			Class.extend('my.test.path.for.Animal',{});
+
+			chai.expect(typeof my.test.path.for.Person).to.equal('function');
+			chai.expect(typeof my.test.path.for.Animal).to.equal('function');
+		});
+
 		it("Should support chain inheritance",function() {
 			var sNinjaHasNoName	= "I am a Ninja, I won't tell you my name.";
 			var sNinjaName = "Frank";
@@ -57,9 +65,14 @@ define(['injectjs.core.Class'],function(Class){
 			});
 
 			chai.expect(function(){
-				test()
+			/*new*/	test();
 			}).to.throw("Constructor called as a function. You forgot the 'new' keyword.");
 
+		});
+		it("Should be still a instanceof Class",function() {
+			Class.extend('Animal',{});
+
+			chai.expect(new Animal() instanceof Class).to.equal(true);
 		});
 	});
 }.bind(this));
