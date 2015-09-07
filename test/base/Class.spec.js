@@ -1,7 +1,7 @@
-require('./bootstrap.js')();
+require('./../bootstrap.js')();
 
-define(['injectjs.core.Class'],function(Class){
-	describe("src.core.Class.prototype - Class extension", function() {
+define(['injectjs.base.Class'],function(Class){
+	describe("src.base.Class.prototype - Class extension", function() {
 		it("Given I create a new Class by extending the default Class function, " +
 		   "then I expect this new Class to be set on the global environment",function() {
 			Class.extend('Person',{

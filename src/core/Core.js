@@ -1,6 +1,7 @@
 module.exports = function(sPath){
 	if (!sPath){
 		//If nothing is provided, use the working directory as path;
+		console.log('Using process.cwd() to determine path.')
 		sPath = process.cwd();
 	}
 	//Load test dependencies
@@ -23,5 +24,5 @@ module.exports = function(sPath){
 	var fnDefine = require(__dirname + '/define.js')(oNodeDependencyManager,oImport);
 	oUtils.setObject('define', fnDefine);
 
-	oImport.mapModulePath(CORE_NAMESPACE,'/src/core');
+	oImport.mapModulePath('injectjs','/src');
 }

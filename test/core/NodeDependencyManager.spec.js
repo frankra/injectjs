@@ -1,4 +1,4 @@
-require('./bootstrap.js')();
+require('./../bootstrap.js')();
 var __base = process.cwd();
 
 var fnNodeDependencyManager = require(__base + '/src/core/NodeDependencyManager.js');

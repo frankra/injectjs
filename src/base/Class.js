@@ -41,7 +41,7 @@ module.exports = function(fnResolve){
 		_createNamespace(sNamespace, fnClass);
 	}
 	//Add the Class to the injectjs namespace
-	_createNamespace('injectjs.core.Class',Class);
+	_createNamespace('injectjs.base.Class',Class);
 	//If this was requested through the dependency management engine, resolve it, otherwise do nothing
 	fnResolve && fnResolve(Class);
 };

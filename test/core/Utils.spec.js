@@ -1,4 +1,4 @@
-require('./bootstrap.js')();
+require('./../bootstrap.js')();
 
 define(['injectjs.core.Utils'],function(Utils){
 
@@ -7,14 +7,13 @@ define(['injectjs.core.Utils'],function(Utils){
 			chai.expect(Utils).to.not.undefined;
 			chai.expect(typeof Utils).to.equal('object');
 		});
-
 	});
 
 	describe("src.core.Utils.prototype - Utils Singleton - API", function() {
 		it("Should have a .proxy function that proxies the fnCallback to the "+
 			"oCallbackContext.",function() {
 				chai.expect(typeof Utils.proxy).to.equal('function');
-				
+
 				var sName = 'test';
 				var oCallbackContext = {
 					_name : sName
