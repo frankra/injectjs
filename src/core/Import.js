@@ -1,4 +1,4 @@
-(function(){
+module.exports = function(fnResolve){
 	"use strict";
 
 	function Import(){
@@ -62,7 +62,7 @@
 	}
 
 	Import.prototype.module = function(sRequiredAlias){
-		return new Promise(Utils.proxy(function(fnResolve,fnReject){
+		return new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
 			this._require(
 				this._assembleRequirePath(sRequiredAlias,true),
 				fnResolve
@@ -86,6 +86,7 @@
 		return this._oFS.readdirSync(sRequirePath);
 	};
 
-	//Singleton
-	global.Import = new Import();
-}())
+	var oImport = new Import();
+	fnResolve && fnResolve(oImport);
+	return oImport;
+}

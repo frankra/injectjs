@@ -21,5 +21,4 @@ describe("src.core.define.prototype - Creation define", function() {
 				done();
 			})
 	});
-
 });

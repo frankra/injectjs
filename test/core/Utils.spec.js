@@ -3,10 +3,10 @@ require('./bootstrap.js')();
 define(['injectjs.core.Utils'],function(Utils){
 
 	describe("src.core.Utils.prototype - Creation of the Utils Singleton", function() {
-	it("Should be initialized when required, and should be a singleton.",function() {
-		chai.expect(Utils).to.not.undefined;
-		chai.expect(typeof Utils).to.equal('object');
-	});
+		it("Should be initialized when required, and should be a singleton.",function() {
+			chai.expect(Utils).to.not.undefined;
+			chai.expect(typeof Utils).to.equal('object');
+		});
 
 	});
 
@@ -14,7 +14,7 @@ define(['injectjs.core.Utils'],function(Utils){
 		it("Should have a .proxy function that proxies the fnCallback to the "+
 			"oCallbackContext.",function() {
 				chai.expect(typeof Utils.proxy).to.equal('function');
-
+				
 				var sName = 'test';
 				var oCallbackContext = {
 					_name : sName
@@ -28,6 +28,7 @@ define(['injectjs.core.Utils'],function(Utils){
 
 				chai.expect(fnCallme()).to.equal(sName);
 		});
+
 		it("The Proxy function should also forward the arguments to the proxied " +
 			"function.",function() {
 				chai.expect(typeof Utils.proxy).to.equal('function');
@@ -46,6 +47,14 @@ define(['injectjs.core.Utils'],function(Utils){
 				var fnProxy = Utils.proxy(setName,oCallbackContext,[sName]);
 					 fnProxy();
 				chai.expect(oCallbackContext._name).to.equal(sName);
+		});
+
+		it("Should set the given Object to the given sNamespace",function() {
+			var oObject = {};
+			var sNamespace = 'my.dummy.big.namespace.for.my.Object';
+			Utils.setObject(sNamespace,oObject);
+
+			chai.expect(my.dummy.big.namespace.for.my.Object).to.equal(oObject);
 		});
 	});
 }.bind(this));
