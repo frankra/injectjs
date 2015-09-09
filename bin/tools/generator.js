@@ -7,13 +7,17 @@ module.exports = function(sPath){
 
 	var mTemplates = {
 		/*sTemplatePath : sFileName*/
-		'/templates/DependencyMap.template.json' : '\\node_dependencies.config.json',
-		'/templates/InjectJSConfig.template.json' : '\\injectjs.config.json'
+		'/templates/DependencyMap.template.json' : '\\node_dependencies.config.json'
 	};
 
 	for (var sTemplatePath in mTemplates){
 		var sFilePath = sPath + mTemplates[sTemplatePath];
-		oFS.readFile(__dirname  + sTemplatePath,'utf8',_getWriteFromTemplateCallback(sTemplatePath,sFilePath));
+		var sActualTemplatePath = (__dirname + sTemplatePath);
+		oFS.readFile(
+			sActualTemplatePath,
+			'utf8',
+			_getWriteFromTemplateCallback(sTemplatePath,sFilePath)
+		);
 	}
 
 	function _getWriteFromTemplateCallback(sTemplatePath,sFilePath){
@@ -31,4 +35,6 @@ module.exports = function(sPath){
 			}
 		}
 	}
+
+	return true;
 };
