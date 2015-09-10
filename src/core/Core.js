@@ -1,17 +1,28 @@
 module.exports = function(sPath){
+	if (!sPath){
+		//If nothing is provided, use the working directory as path;
+		console.log('Using process.cwd() to determine path.')
+		sPath = process.cwd();
+	}
 	//Load test dependencies
-	require(__dirname + '/Utils.js')();
+	const CORE_NAMESPACE = 'injectjs.core';
 
-	require(__dirname + '/Import.js');
-		//Configure module path
-	Import.mapModulePath('src.core','/src/core');
+	var oUtils = require(__dirname + '/Utils.js')();
+	oUtils.setObject(CORE_NAMESPACE + '.Utils', oUtils);
+
+	var oImport = require(__dirname + '/Import.js')();
+	oUtils.setObject(CORE_NAMESPACE + '.Import', oImport);
 
 	//Setup Node dependency manager
 	var fnNodeDependencyManager = require(__dirname + '/NodeDependencyManager.js');
-	global.NodeDependencyManager = new fnNodeDependencyManager({
+	var oNodeDependencyManager = new fnNodeDependencyManager({
 		path: sPath + '/node_dependencies.config.json'
 	});
+	oUtils.setObject(CORE_NAMESPACE + '.NodeDependencyManager', oNodeDependencyManager);
 
 	//Start define
-	global.define = require(__dirname + '/define.js')(NodeDependencyManager,Import);
+	var fnDefine = require(__dirname + '/define.js')(oNodeDependencyManager,oImport);
+	oUtils.setObject('define', fnDefine);
+
+	oImport.mapModulePath('injectjs','/src');
 }

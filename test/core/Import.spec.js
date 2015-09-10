@@ -1,12 +1,9 @@
-require('./bootstrap.js')();
+require('./../bootstrap.js')();
 
 function spyRequires(){
-
-	spyOn(Import,'_readdirSync').andCallThrough();
-	spyOn(Import,'_require').andCallThrough();
-
+	chai.spy.on(Import,'_readdirSync');
+	chai.spy.on(Import,'_require');
 }
-
 
 describe("src.core.Import.prototype - Import API",function(){
 
@@ -14,28 +11,16 @@ describe("src.core.Import.prototype - Import API",function(){
 		var sAlias = 'app.src.core.files';
 		var sPhysicalPath = 'C:/Application/src';
 
-		Import.mapModulePath(sAlias,sPhysicalPath);
+		injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
 
-		chai.expect(Import._getRegisterFromAlias(Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
+		chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
 	});
 
 	it("Should provide a Promise for the module required",function(){
-		Import.module('src.core.Class').then(function(fnClass){
+		injectjs.core.Import.module('injectjs.core.Class').then(function(fnClass){
 			chai.expect(fnClass).to.not.equal(undefined);
 			chai.expect(Class).to.not.equal(undefined);
 			done();
 		});
 	});
-	/* FIXME - Currently there is no use case for this, however this works quite well :)
-	it("The function 'path' should import all files on the given sPath, asynchronously",
-	function(){
-		spyRequires();
-
-		var sAlias = 'backend.src.core.wsockets';
-
-		Import.path(sAlias).then(function(aFiles){
-			chai.expect(aFiles).not.to.equalUndefined();
-		});
-
-	});*/
 })

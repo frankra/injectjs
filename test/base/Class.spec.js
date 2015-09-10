@@ -1,8 +1,7 @@
-require('./bootstrap.js')();
+require('./../bootstrap.js')();
 
-define(['src.core.Class'],function(Class){
-
-	describe("src.core.Class.prototype - Class extension", function() {
+define(['injectjs.base.Class'],function(Class){
+	describe("src.base.Class.prototype - Class extension", function() {
 		it("Given I create a new Class by extending the default Class function, " +
 		   "then I expect this new Class to be set on the global environment",function() {
 			Class.extend('Person',{
@@ -34,6 +33,14 @@ define(['src.core.Class'],function(Class){
 			chai.expect(oPerson.getName()).to.equal(sPersonName);
 		});
 
+		it("Should not override other constructors on the same namespace",function() {
+			Class.extend('my.test.path.for.Person',{});
+			Class.extend('my.test.path.for.Animal',{});
+
+			chai.expect(typeof my.test.path.for.Person).to.equal('function');
+			chai.expect(typeof my.test.path.for.Animal).to.equal('function');
+		});
+
 		it("Should support chain inheritance",function() {
 			var sNinjaHasNoName	= "I am a Ninja, I won't tell you my name.";
 			var sNinjaName = "Frank";
@@ -49,6 +56,22 @@ define(['src.core.Class'],function(Class){
 
 			chai.expect(oNinja.getName()).to.equal(sNinjaHasNoName);
 			chai.expect(oNinja.name).to.equal(sNinjaName);
+		});
+
+		it("If I forget the 'new' keyword an error should happen, as this would " +
+		"run the constructor as a function in the global scope",function() {
+			Class.extend('test',{
+			});
+
+			chai.expect(function(){
+			/*new*/	test();
+			}).to.throw("Constructor called as a function. You forgot the 'new' keyword.");
+
+		});
+		it("Should be still a instanceof Class",function() {
+			Class.extend('Animal',{});
+
+			chai.expect(new Animal() instanceof Class).to.equal(true);
 		});
 	});
 }.bind(this));

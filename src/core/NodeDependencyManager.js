@@ -22,7 +22,7 @@
 
 	NodeDependencyManager.prototype.getDependency = function(sAlias){
 		if (this._mConfig.hasOwnProperty(sAlias)){
-			return new Promise(Utils.proxy(function(fnResolve,fnReject){
+			return new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
 				fnResolve(this._fetchDependencyByAlias(sAlias));
 			},this));
 		}else {
@@ -74,5 +74,4 @@
 	}
 
 	module.exports = NodeDependencyManager;
-
 }());

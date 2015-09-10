@@ -9,7 +9,7 @@ module.exports = function(){
 
     if (aArguments[0] === 'init'){
         var sPath = sCurrentPath; //TODO: Make configurable - Ask user
-        require('./tools/generator.js')(sPath);
+        return require('./tools/generator.js')(sPath);
     }
 
 }(arguments);

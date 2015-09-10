@@ -1,15 +1,24 @@
-(function(){
+module.exports = function(fnResolve){
 	"use strict";
-
+	/**
+	* Import module resolver
+	* @class Import
+	*/
 	function Import(){
 		this._mPathTree = {};
-		this._mRequiredModules = {};
-		this._mRequiredPaths = {};
-
-		this._oFS = require('fs');
 		this._base = process.cwd();
 	};
-
+	/**
+	* Maps the given sAlias to the given sPhysicalPath.
+	* Example: Import.mapModulePath('my.test.module.path','/src/files');
+	* @param {String} sAlias
+	*		Name of the alias to be defined, splitted by dots '.'
+	* @param {String} sPhysicalPath
+	*		The actual physical path where the files are located, or at least part of it
+	* @return {this} Import
+	*		To allow chain usage
+	* @public
+	*/
 	Import.prototype.mapModulePath = function(sAlias,sPhysicalPath){
 		var aAliasParts = sAlias.split('.');
 		this._setRegisterFromAlias(this._mPathTree,aAliasParts,sAlias,sPhysicalPath);
@@ -25,6 +34,7 @@
 				oNavigator = oNavigator[sPart];
 			}
 			//Recursion can cause Stack-overflow errors. JS don't support tail calculation
+			//TODO: ES6 will improve tail calculation \o/
 			this._setRegisterFromAlias(oNavigator,aAliasParts,sAlias,sPhysicalPath);
 		}else {
 			oNavigator.path = sPhysicalPath
@@ -54,64 +64,42 @@
 	};
 
 	Import.prototype._prepareRequirePath = function(sPath,bAddJSSuffix){
-		var sDotsReplaced = sPath.replace(/\./gi,'/');
+		var sDotsReplaced = sPath.replace(/\./gi,'/'); //Regex: Replace dots with slashes '.'>'/'
 
 		var sWithJSSuffix = bAddJSSuffix ? sDotsReplaced.concat('.js') : sDotsReplaced;
 		var sWithBasePrefix = this._base + sWithJSSuffix;
 		return sWithBasePrefix
 	}
-
+	/**
+	* Requires the module defined by the given Alias, so when requiring
+	* custom dependencies only the Alias or at least part of it needs to be provided.
+	* Given that you maped:
+	* 		Import.mapModulePath('my.test.alias','src/files');
+	* When you import:
+	*		Import.module('my.test.alias.with.my.test.Object');
+	* Then you actually require:
+	*		<basepath>/src/files/with/my/test/Object.js
+	* > Note that '/with/my/test/' path was automatically resolved, since it was not specified.
+	* > Note that by default a '.js' will be appended by the end of the required depency.
+	* @param {String} sRequiredAlias
+	*	The alias to be resolved into the physical path and be required as a module
+	* @return {Promise} Promise
+	*	The promise that will be resolved once the module is loaded
+	*/
 	Import.prototype.module = function(sRequiredAlias){
-		return new Promise(Utils.proxy(function(fnResolve,fnReject){
+		return new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
 			this._require(
 				this._assembleRequirePath(sRequiredAlias,true),
 				fnResolve
 			);
 		},this));
 	};
-
-	Import.prototype.path = function(sRequiredAlias){
-		var sRequirePath = this._assembleRequirePath(sRequiredAlias,false);
-		var sFixSlashes = sRequirePath.replace(/\//gi,'\\');
-
-		var aDirFiles = this._readdirSync(sFixSlashes) || [];
-
-		var sFileName;
-		var aFilePromises = [];
-		for (var i = 0, ii = aDirFiles.length; i < ii; i++){
-			sFileName = aDirFiles[i].split('.')[0]; //remove '.js'
-			aFilePromises.push(
-				new Promise(Utils.proxy(
-					function(fnResolve,fnReject){
-						this._require(
-							this._prepareRequirePath(
-								sRequiredAlias.concat('.').concat(sFileName),
-								true
-							).replace(/\\/gi,'/'),
-							this._resolveFileNameAndContent(sFileName,fnResolve)
-						);
-					},this)
-				)
-			);
-		}
-
-		return Promise.all(aFilePromises);
-	};
-
-	Import.prototype._resolveFileNameAndContent = function(sFileName,fnResolvePromise){
-		return function(fnRequiredContent){
-			fnResolvePromise({sFileName:sFileName,vFileContent: fnRequiredContent});
-		}
-	},
-
+	//I wrapped this one because I wanted to test the 'require' calls...
 	Import.prototype._require = function(sRequirePath,fnResolve){
 		return require(sRequirePath)(fnResolve);
 	};
 
-	Import.prototype._readdirSync = function(sRequirePath){
-		return this._oFS.readdirSync(sRequirePath);
-	};
-
-	//Singleton
-	global.Import = new Import();
-}())
+	var oImport = new Import();
+	fnResolve && fnResolve(oImport);
+	return oImport;
+}
