@@ -6,7 +6,7 @@
   "scripts": {
     "t:bin": "mocha -w test_bin/**/*spec.js",
     "t:src": "mocha -w test/**/*spec.js",
-    "test": "mocha test/**/*spec.js"
+    "test": "mocha test*/**/*spec.js"
   },
   "bin": {
     "injectjs": "bin/client"

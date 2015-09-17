@@ -6,10 +6,17 @@
 #### For TDD use
 `npm run t:src`
 
-`npm run t:bin` (wip)
+`npm run t:bin`
 #### GIT Working model
 https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow
 
+### How to use:
+
+#### Initial steps
+1. On your project folder run: `npm install node-injectjs -g` in order to install the client.
+2. Then run: `injectjs init` in order to initialize the application.
+
+#### Implementation
+
 
 ### Wiki and Documentation
-Coming soon..
