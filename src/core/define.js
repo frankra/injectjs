@@ -26,9 +26,9 @@ module.exports = function(NodeDependencyManager,Import){
 		//When all modules are loaded, apply them on the implementation function
 		Promise.all(aModulePromises).then(function(aModules){
 			fnImplementation.apply(fnImplementation,aModules);
-		}).catch(function(){
+		}).catch(function(e){
 			//This should be handled properly...
-			console.log('Error while executing callback from define API: ',arguments);
+			console.log('Error while executing callback from define API: ',e.stack);
 		});
 	};
 	return define;
