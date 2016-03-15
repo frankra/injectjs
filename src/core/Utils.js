@@ -23,6 +23,8 @@ module.exports = function(fnResolve){
 	};
 
 	var oUtils = new Utils();
-	fnResolve && fnResolve(oUtils);
+	if(fnResolve){
+		fnResolve(oImport);
+	}
 	return oUtils;
 };

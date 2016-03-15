@@ -10,7 +10,7 @@ describe("bin.client - Functionality",function(){
             //This is kind of crap... But I am not sure how to check if the require hapened
             var sConsoleLog = arguments[1];
             chai.expect(typeof sConsoleLog).to.equal('string');
-            done()
-        })
-    })
-})
+            done();
+        });
+    });
+});

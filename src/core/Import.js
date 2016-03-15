@@ -34,7 +34,7 @@ module.exports = function(fnResolve){
 				oNavigator = oNavigator[sPart];
 			}
 			//Recursion can cause Stack-overflow errors. JS don't support tail calculation
-			//TODO: ES6 will improve tail calculation \o/
+			//BTW - ES6 will improve tail calculation \o/
 			this._setRegisterFromAlias(oNavigator,aAliasParts,sAlias,sPhysicalPath);
 		}else {
 			oNavigator.path = sPhysicalPath
@@ -100,6 +100,8 @@ module.exports = function(fnResolve){
 	};
 
 	var oImport = new Import();
-	fnResolve && fnResolve(oImport);
+	if(fnResolve){
+		fnResolve(oImport);
+	}
 	return oImport;
 }
