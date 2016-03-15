@@ -1,4 +1,4 @@
-require('./../bootstrap.js')();
+
 var __base = process.cwd();
 
 var fnNodeDependencyManager = require(__base + '/src/core/NodeDependencyManager.js');
@@ -11,6 +11,11 @@ function restart(){
 	});
 }
 describe("src.core.NodeDependencyManager.prototype - Creation of the Dependency Manager", function() {
+
+	beforeEach(function(){
+		require('./../bootstrap.js')();
+	});
+
 	it("Should read and parse the configuration file for the given path",function() {
 			restart();
 		chai.expect(oNodeDependencyManager).to.not.be.null;

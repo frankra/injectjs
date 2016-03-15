@@ -1,6 +1,8 @@
-require('./../bootstrap.js')();
-
 define(['injectjs.core.Utils'],function(Utils){
+
+	beforeEach(function(){
+		require('./../bootstrap.js')();
+	});
 
 	describe("src.core.Utils.prototype - Creation of the Utils Singleton", function() {
 		it("Should be initialized when required, and should be a singleton.",function() {
