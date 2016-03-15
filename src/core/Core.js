@@ -26,5 +26,5 @@ module.exports = function(sPath){
 	var fnDefine = require(__dirname + '/define.js')(oNodeDependencyManager,oImport);
 	oUtils.setObject('define', fnDefine);
 
-	oImport.mapModulePath('injectjs','/src');
+	oImport.mapModulePath('injectjs','/node_modules/node-injectjs/src');
 }

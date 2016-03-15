@@ -1,11 +1,13 @@
-require('./../bootstrap.js')();
-
 function spyRequires(){
 	chai.spy.on(Import,'_readdirSync');
 	chai.spy.on(Import,'_require');
 }
 
 describe("src.core.Import.prototype - Import API",function(){
+
+	beforeEach(function(){
+		require('./../bootstrap.js')();
+	});
 
 	it("Should have a map between the given alias to the given physical path",function(){
 		var sAlias = 'app.src.core.files';

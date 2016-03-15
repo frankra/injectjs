@@ -1,6 +1,8 @@
-require('./../bootstrap.js')();
-
 describe("src.core.define.prototype - Creation define", function() {
+
+	beforeEach(function(){
+		require('./../bootstrap.js')();
+	});
 
 	it("Should call the implementation function once the dependencies were fetched",function(done) {
 		define(['injectjs.base.Class'],function(Class){
