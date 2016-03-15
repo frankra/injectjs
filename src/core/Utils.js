@@ -24,7 +24,7 @@ module.exports = function(fnResolve){
 
 	var oUtils = new Utils();
 	if(fnResolve){
-		fnResolve(oImport);
+		fnResolve(oUtils);
 	}
 	return oUtils;
 };
