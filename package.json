@@ -1,6 +1,6 @@
 {
   "name": "node-injectjs",
-  "version": "0.0.11",
+  "version": "1.0.1",
   "description": "A NodeJS Dependency Management Framework",
   "main": "src/core/Core.js",
   "scripts": {
