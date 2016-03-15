@@ -7,7 +7,7 @@ module.exports = function(sPath){
 
 	var mTemplates = {
 		/*sTemplatePath : sFileName*/
-		'/templates/DependencyMap.template.json' : '\\node_dependencies.config.json'
+		'/templates/DependencyMap.template.json' : '/node_dependencies.config.json'
 	};
 
 	for (var sTemplatePath in mTemplates){

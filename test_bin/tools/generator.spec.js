@@ -1,3 +1,4 @@
+require('../bootstrap.js');
 var oFS = require('fs');
 var sNode_DependencyConfigPath = (process.cwd() + '/node_dependencies.config.json');
 
@@ -19,12 +20,14 @@ function getGeneratedFile(fnCallback){
 }
 
 describe("bin.tools.generator - Functionality",function(){
-    after(deleteGeneratedFile);
     it("Should generate the 'node_dependencies.config.json' file at the root path",function(done){
         require(process.cwd() + '/bin/tools/generator.js')(process.cwd());
         var bExecuted = getGeneratedFile(function(){
-            done()
+            done();
         })
         chai.expect(bExecuted).to.equal(true);
+        if (bExecuted){
+          setTimeout(deleteGeneratedFile,1000);
+        }
     })
 })

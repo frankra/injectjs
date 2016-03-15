@@ -43,9 +43,13 @@ module.exports = function(fnResolve){
 	//Add the Class to the injectjs namespace
 	_createNamespace('injectjs.base.Class',Class);
 	//If this was requested through the dependency management engine, resolve it, otherwise do nothing
-	fnResolve && fnResolve(Class);
+	if(fnResolve){
+		fnResolve(Class);
+	}
 };
 function _createNamespace(sNamespace, fnConstructor){
+	"use strict";
+	
 	var aSplittedNamespace = sNamespace.split('.');
 	var oNavigator = global;
 	for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){

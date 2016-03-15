@@ -10,7 +10,6 @@ module.exports = function(NodeDependencyManager,Import){
 	*		The callback function to be called when all required dependencies are resolved.
 	*/
 	function define(aDependencies,fnImplementation){
-		var oInitializationPromise = null;
 		var aModulePromises = [];
 		//Fetch all requird dependencies
 		for (var i = 0, ii = aDependencies.length; i < ii; i++){
@@ -28,7 +27,7 @@ module.exports = function(NodeDependencyManager,Import){
 		Promise.all(aModulePromises).then(function(aModules){
 			fnImplementation.apply(fnImplementation,aModules);
 		}).catch(function(){
-			//TODO: This should be handled properly...
+			//This should be handled properly...
 			console.log('Error while executing callback from define API: ',arguments);
 		});
 	};
