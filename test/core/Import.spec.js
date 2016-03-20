@@ -21,7 +21,6 @@ describe("src.core.Import.prototype - Import API",function(){
 	it("Should provide a Promise for the module required",function(){
 		injectjs.core.Import.module('injectjs.core.Class').then(function(fnClass){
 			chai.expect(fnClass).to.not.equal(undefined);
-			chai.expect(Class).to.not.equal(undefined);
 			done();
 		});
 	});
