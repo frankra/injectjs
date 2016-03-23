@@ -99,9 +99,21 @@ module.exports = function(fnResolve){
 		return require(sRequirePath)(fnResolve);
 	};
 
-	var oImport = new Import();
-	if(fnResolve){
+	Import.prototype.getPath = function(sAlias){
+		return this._assembleRequirePath(sAlias,false);
+	};
+
+	var oImport;
+	if (injectjs && injectjs.core && injectjs.core.Import){
+		oImport = injectjs.core.Import;
+
+	}else {
+		oImport = new Import();
+	}
+
+	if (fnResolve){
 		fnResolve(oImport);
 	}
 	return oImport;
+
 }
