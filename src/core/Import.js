@@ -50,9 +50,10 @@ module.exports = function(fnResolve){
 		}else if (oNavigator.hasOwnProperty('alias')){
 			return oNavigator;
 		}else {
-			throw new Error('Import.prototype._getRegisterFromAlias: Attribute "path" not found.' + sAliasParts.join('.'));
+			throw new Error("Attribute 'path' not found on alias segment: " + sPart);
 		}
 	};
+
 	Import.prototype._assembleRequirePath = function(sRequiredAlias,bAddJSSuffix){
 		var oRegister = this._getRegisterFromAlias(this._mPathTree,sRequiredAlias.split('.'));
 
@@ -68,7 +69,7 @@ module.exports = function(fnResolve){
 
 		var sWithJSSuffix = bAddJSSuffix ? sDotsReplaced.concat('.js') : sDotsReplaced;
 		var sWithBasePrefix = this._base + sWithJSSuffix;
-		return sWithBasePrefix
+		return sWithBasePrefix;
 	}
 	/**
 	* Requires the module defined by the given Alias, so when requiring
@@ -88,18 +89,11 @@ module.exports = function(fnResolve){
 	*/
 	Import.prototype.module = function(sRequiredAlias){
 		return new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
-			this._require(
-				this._assembleRequirePath(sRequiredAlias,true),
-				fnResolve
-			);
+			return require(this.getAbsolutePath(sRequiredAlias))(fnResolve);
 		},this));
 	};
-	//I wrapped this one because I wanted to test the 'require' calls...
-	Import.prototype._require = function(sRequirePath,fnResolve){
-		return require(sRequirePath)(fnResolve);
-	};
 
-	Import.prototype.getPath = function(sAlias){
+	Import.prototype.getAbsolutePath = function(sAlias){
 		return this._assembleRequirePath(sAlias,false);
 	};
 
