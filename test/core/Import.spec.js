@@ -1,8 +1,3 @@
-function spyRequires(){
-	chai.spy.on(Import,'_readdirSync');
-	chai.spy.on(Import,'_require');
-}
-
 describe("src.core.Import.prototype - Inspection",function(){
 
 	beforeEach(function(){
@@ -18,6 +13,11 @@ describe("src.core.Import.prototype - Inspection",function(){
 
 	describe("src.core.Import.prototype - API",function(){
 		describe("src.core.Import.prototype - Module Mapping",function(){
+
+			beforeEach(function(){
+				injectjs.core.Import._mPathTree = {}; //Clear Mapping
+			});
+
 			it("Should have a map between the given alias to the given physical path",function(){
 				var sAlias = 'app.src.core.files';
 				var sPhysicalPath = 'C:/Application/src';
@@ -41,22 +41,34 @@ describe("src.core.Import.prototype - Inspection",function(){
 				chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sBranchAlias.split('.')).path).to.equal(sBranchPhysicalPath);
 			});
 
-			it("Should throw an error if the 'path' is not defined for a given alias",function(){
-				var sAlias = 'app.src.core.files';
-				var sPhysicalPath = 'C:/Application/src';
+			it("Should use the last valid mapping node in case it reaches a node without mapping",function(){
+				var sAlias = 'app.src';
+				var sPhysicalPath = '/Application/src';
 				var sUnknownAlias = 'app.src.unmapped.alias';
+				var sExpectedAbsolutePath = process.cwd() + sPhysicalPath + '/unmapped/alias';
+
+				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+
+				chai.expect(injectjs.core.Import.getAbsolutePath(sUnknownAlias)).to.equal(sExpectedAbsolutePath);
+			});
+
+			it("Should should throw an error if the path was indeed not mapped",function(){
+				var sAlias = 'app.src.core.files';
+				var sPhysicalPath = '/Application/src';
+				var sUnknownAlias = 'app.src.unmapped.alias';
+				var sExpectedAbsolutePath = process.cwd() + sPhysicalPath + '/unmapped/alias';
 
 				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
 
 				chai.expect(function(){
 					injectjs.core.Import.getAbsolutePath(sUnknownAlias);
-				}).to.throw(/Attribute 'path' not found/);
+				}).to.throw(/Attribute 'path' not found on node with alias segment/);
 			});
 		});
 
 		describe("src.core.Import.prototype - Import module",function(){
 			it("Should provide a Promise for the module required",function(){
-				injectjs.core.Import.module('injectjs.core.Class').then(function(fnClass){
+				injectjs.core.Import.module('injectjs.base.Class').then(function(fnClass){
 					chai.expect(fnClass).to.not.equal(undefined);
 					done();
 				});
