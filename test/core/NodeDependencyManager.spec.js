@@ -16,10 +16,24 @@ describe("src.core.NodeDependencyManager.prototype - Creation of the Dependency 
 		require('./../bootstrap.js')();
 	});
 
+	it("Should throw an error if the 'mParameters' argument is not provided on the constructor",function() {
+		chai.expect(function(){
+			new fnNodeDependencyManager();
+		}).to.throw(/Missing "mParameters" argument to initialize NodeDependencyManager/);
+	});
+
 	it("Should read and parse the configuration file for the given path",function() {
 			restart();
 		chai.expect(oNodeDependencyManager).to.not.be.null;
 		chai.expect(oNodeDependencyManager.getConfig()).to.not.be.null;
+	});
+
+	it("Should throw an error if the requested dependency is not mapped on the 'node_dependencies.config.json' file" ,function() {
+			restart();
+
+			chai.expect(function(){
+				oNodeDependencyManager.getDependency('oDependencyNotMapped');
+			}).to.throw(/Dependency with alias: "oDependencyNotMapped" is not registered, please check dependency map on/);
 	});
 
 	it("Should provide the dependency required by its alias " +
