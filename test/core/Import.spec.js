@@ -1,8 +1,3 @@
-function spyRequires(){
-	chai.spy.on(Import,'_readdirSync');
-	chai.spy.on(Import,'_require');
-}
-
 describe("src.core.Import.prototype - Inspection",function(){
 
 	beforeEach(function(){
@@ -17,49 +12,105 @@ describe("src.core.Import.prototype - Inspection",function(){
 	});
 
 	describe("src.core.Import.prototype - API",function(){
-			describe("src.core.Import.prototype - Module Mapping",function(){
-				it("Should have a map between the given alias to the given physical path",function(){
-					var sAlias = 'app.src.core.files';
-					var sPhysicalPath = 'C:/Application/src';
+		describe("src.core.Import.prototype - Module Mapping",function(){
 
-					injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
-
-					chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
-				});
+			beforeEach(function(){
+				injectjs.core.Import._mPathTree = {}; //Clear Mapping
 			});
 
-			describe("src.core.Import.prototype - Import module",function(){
-				it("Should provide a Promise for the module required",function(){
-					injectjs.core.Import.module('injectjs.core.Class').then(function(fnClass){
-						chai.expect(fnClass).to.not.equal(undefined);
-						done();
-					});
-				});
+			it("Should have a map between the given alias to the given physical path",function(){
+				var sAlias = 'app.src.core.files';
+				var sPhysicalPath = 'C:/Application/src';
+
+				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+
+				chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
 			});
 
-			describe("src.core.Import.prototype - Transform Alias to Path",function(){
-				it("Should provide an API to transform the Alias into the physical path",function(){
-					var sAlias = 'app.src.core.files';
-					var sPhysicalPath = '/Application/src';
+			it("Should append new mapped paths to the tree map, allowing enhanced mapping",function(){
+				var sAlias = 'app.src.core.files';
+				var sPhysicalPath = 'C:/Application/src';
 
-					injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+				var sBranchAlias = 'app.src.core.files.services.security';
+				var sBranchPhysicalPath = 'D:/Other/Source/Of/Files';
 
-					chai.expect(injectjs.core.Import.getPath(sAlias)).to.equal(process.cwd() + sPhysicalPath);
-				});
+				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+				injectjs.core.Import.mapModulePath(sBranchAlias,sBranchPhysicalPath);
 
-				it("Should append the additional alias parts to the physical path",function(){
-					var sAlias = 'app.src.core.files';
-					var sCustomRequireAlias = 'app.src.core.files.test';
-
-					var sPhysicalPath = '/Application/src';
-					var sCustomPhysicalPath = '/Application/src/test';
-
-					injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
-
-					chai.expect(injectjs.core.Import.getPath(sCustomRequireAlias)).to.equal(process.cwd() + sCustomPhysicalPath);
-				});
+				chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
+				chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sBranchAlias.split('.')).path).to.equal(sBranchPhysicalPath);
 			});
 
+			it("Should fallback to the last node containing a path mapping, if the current resolved node does not have it.",function(){
+				/*This is an edge case. Given that you have mapped the path like 'app.src',
+					the framework will basically create two nodes on the mapping tree in which the last one
+					is containing the 'path' attribute, which contains the physical path to the source(s).
+					Now if you add a new mapping which extends the previous one, like 'app.src.core.services.security',
+					again the last node will have the mapping, but now all nodes in between the 'src' node and 'security' node
+					won't have any mapping, because it was not explicitely defined. The solution for these cases is fallback to
+					the last valid node. See test:
+				*/
+
+				var sBaseAppAlias = 'app.src';
+				var sBaseAppPath = '/Application/src';
+
+				var sAppEnhancedAlias = 'app.src.core.services.security';
+				var sAppEnhancedPath = '/Another/Application/Mapping';
+
+				var sAliasRequested = 'app.src.core.MyCoreModule';
+				var sExpectedAbsolutePath = process.cwd() + sBaseAppPath/*Because it is defined by the last valid node*/ + '/core/MyCoreModule';
+
+				injectjs.core.Import.mapModulePath(sBaseAppAlias,sBaseAppPath);
+				injectjs.core.Import.mapModulePath(sAppEnhancedAlias,sAppEnhancedPath);
+
+				chai.expect(injectjs.core.Import.getAbsolutePath(sAliasRequested)).to.equal(sExpectedAbsolutePath);
+			});
+
+			it("Should should throw an error if the path was indeed not mapped",function(){
+				var sAlias = 'app.src.core.files';
+				var sPhysicalPath = '/Application/src';
+				var sUnknownAlias = 'app.src.unmapped.alias';
+				var sExpectedAbsolutePath = process.cwd() + sPhysicalPath + '/unmapped/alias';
+
+				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+
+				chai.expect(function(){
+					injectjs.core.Import.getAbsolutePath(sUnknownAlias);
+				}).to.throw(/Attribute 'path' not found on node with alias segment/);
+			});
+		});
+
+		describe("src.core.Import.prototype - Import module",function(){
+
+			it("Should provide a Promise for the module required",function(){
+				injectjs.core.Import.module('injectjs.base.Class').then(function(fnClass){
+					chai.expect(fnClass).to.not.equal(undefined);
+					done();
+				});
+			});
+		});
+
+		describe("src.core.Import.prototype - Transform Alias to Path",function(){
+			it("Should provide an API to transform the Alias into the physical path",function(){
+				var sAlias = 'app.src.core.files';
+				var sPhysicalPath = '/Application/src';
+
+				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+
+				chai.expect(injectjs.core.Import.getAbsolutePath(sAlias)).to.equal(process.cwd() + sPhysicalPath);
+			});
+
+			it("Should append the additional alias parts to the physical path",function(){
+				var sAlias = 'app.src.core.files';
+				var sCustomRequireAlias = 'app.src.core.files.test';
+
+				var sPhysicalPath = '/Application/src';
+				var sCustomPhysicalPath = '/Application/src/test';
+
+				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+
+				chai.expect(injectjs.core.Import.getAbsolutePath(sCustomRequireAlias)).to.equal(process.cwd() + sCustomPhysicalPath);
+			});
+		});
 	});
-
 });

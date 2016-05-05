@@ -3,7 +3,7 @@
 
 	function NodeDependencyManager(mParameters){
 		if (!mParameters){
-			throw new Error('Missing mParameters argument to initialize NodeDependencyManager.');
+			throw new Error('Missing "mParameters" argument to initialize NodeDependencyManager');
 		}
 		//Init internal attributes
 		this._oFS = require('fs');

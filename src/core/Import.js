@@ -41,20 +41,27 @@ module.exports = function(fnResolve){
 			oNavigator.alias = sAlias;
 		};
 	};
-
-	Import.prototype._getRegisterFromAlias = function(oNavigator,aAliasParts){
+	//Recursive Function
+	Import.prototype._getRegisterFromAlias = function(oNavigator,aAliasParts,oLastValidNode,sOriginalAlias){
 		var sPart = aAliasParts.splice(0,1)[0];
+		if (oNavigator.path){
+			oLastValidNode = oNavigator;
+		};
+
 		if (sPart && oNavigator.hasOwnProperty(sPart)){
 			oNavigator = oNavigator[sPart];
-			return this._getRegisterFromAlias(oNavigator,aAliasParts);
+			return this._getRegisterFromAlias(oNavigator,aAliasParts,oLastValidNode,sOriginalAlias);
 		}else if (oNavigator.hasOwnProperty('alias')){
 			return oNavigator;
+		}else if (oLastValidNode && oLastValidNode.path){
+			return oLastValidNode;
 		}else {
-			throw new Error('Import.prototype._getRegisterFromAlias: Attribute "path" not found.' + sAliasParts.join('.'));
+			throw new Error("Attribute 'path' not found on node with alias segment: " + sPart + " on alias: " + sOriginalAlias);
 		}
 	};
+
 	Import.prototype._assembleRequirePath = function(sRequiredAlias,bAddJSSuffix){
-		var oRegister = this._getRegisterFromAlias(this._mPathTree,sRequiredAlias.split('.'));
+		var oRegister = this._getRegisterFromAlias(this._mPathTree,sRequiredAlias.split('.'),null,sRequiredAlias);
 
 		var sAliasReplaced = sRequiredAlias.replace(oRegister.alias,oRegister.path);
 
@@ -68,7 +75,7 @@ module.exports = function(fnResolve){
 
 		var sWithJSSuffix = bAddJSSuffix ? sDotsReplaced.concat('.js') : sDotsReplaced;
 		var sWithBasePrefix = this._base + sWithJSSuffix;
-		return sWithBasePrefix
+		return sWithBasePrefix;
 	}
 	/**
 	* Requires the module defined by the given Alias, so when requiring
@@ -87,19 +94,28 @@ module.exports = function(fnResolve){
 	*	The promise that will be resolved once the module is loaded
 	*/
 	Import.prototype.module = function(sRequiredAlias){
-		return new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
-			this._require(
-				this._assembleRequirePath(sRequiredAlias,true),
-				fnResolve
-			);
+		var iTimeoutID = setTimeout(function(){
+			console.log('Dependency taking too long to load: ', sRequiredAlias)
+		},2000);
+
+		var oPromise = new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
+			require(this._assembleRequirePath(sRequiredAlias,true))(fnResolve);
 		},this));
-	};
-	//I wrapped this one because I wanted to test the 'require' calls...
-	Import.prototype._require = function(sRequirePath,fnResolve){
-		return require(sRequirePath)(fnResolve);
+
+		oPromise.then(function(){
+			clearTimeout(iTimeoutID);
+		}).catch(function(oError){
+			console.error(//This should be handled properly.
+				'Error while loading module: ' + sRequiredAlias,
+				'Original Error Message: ' + oError.message,
+				oError.stack
+			);
+		});
+
+		return oPromise;
 	};
 
-	Import.prototype.getPath = function(sAlias){
+	Import.prototype.getAbsolutePath = function(sAlias){
 		return this._assembleRequirePath(sAlias,false);
 	};
 

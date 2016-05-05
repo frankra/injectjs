@@ -5,7 +5,7 @@
   "main": "src/core/Core.js",
   "scripts": {
     "testrunner": "mocha -w --recursive test*/*",
-    "test": "mocha test*/**/*spec.js"
+    "test": "mocha test*/*"
   },
   "bin": {
     "injectjs": "bin/client"

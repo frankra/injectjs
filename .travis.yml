@@ -1,15 +1,15 @@
 language: node_js
 node_js:
-- '4.0.0'
-- '5.8.0'
+- 4.0.0
+- 5.8.0
 after_script: NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha
-  test/**/*spec.js --report lcovonly -R --spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  test*/* --report lcovonly -R --spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   && rm -rf ./coverage
 deploy:
   provider: npm
   email: franktestrlz@gmail.com
   api_key:
-    secure: f1YwhiqrC2gScCfJWkQffjFoLjsE6Fj3jIRlghKh/Qn4KGN2A8XiqAK/yAkQQNF/ujWoxfA7XoHZ/sMVvGY4w0TwxNbrr8H9E2h/ClWyiPFI1B7hWRw4R3JKGVbJxbbLgSXb8+aaLP7amEpkP4lFjq/nIkFhqiv9ZyZ+CUlnQietl1PWjf5SwszfANM/VD8y02WYszmqXiVaRzSOrP/Umt1bv6lBh2MFdBHmwP332FYlMkbJuQK94Uhjh+nRHoMjAuTpZXH+ixK0k2tUpvlLNtjYoHjmu+ekC1eFotN/kgdfeWPeSoZC9MGiniZ1grK3RHKmgKTjT1jzDmfIPId38ocdPYWn4+E6o80AJNcXmxj72l/1SnKMrjhojWQ6MZMYkSP++ywE9EDlFY9Q39LH788pUrPDGuOljKUUl9Yv/7knR31RtnxYEHTz9BARxZNVjjbXbW7Wkh12TCo9UiLgn/SDUIUqhdoBtwyiLRGiPGD76sTFXYsN/R3dQAR4ksbYh0PYQUw46tAB7JoZvJL6QuLe9YSy/dDwTdq1WN7RoBlH0DTx8a4lk/OZmxSHk8K2lyh9F0EdsKShh/3eph0uPe6z4izv/c3hQmYBILoUXr9nlVJYzb9ehFLV1MFSTu2NXhHRDlecvZgKfoeTuWFwdQslIpndd2iEAgfr24OVtLQ=
+    secure: DuccQp600EzB5b+ixCBbB1NV2XVH7e01UUidrC+PsBI401oFbm9+ktzYmub4cOsU/d+sidHFIdHP4j37HUy00C24icoaP0ygu3aA+uEWGWjY+D/+S8vYub1EQUBwypIp1Exg0+DQwlWQwzcfUlvvmEuJxaM1haxv56W+4KMSygXefa+G/uxTKcnnSBRGSAL+53kY5n0RvVsrKUbmJ23lvI9MfnunRupz/HGbJkUv83yuRQr5u6LTED8nGbQMvmFh37T9Uc83CjxcP6oE8A2PBR3ho8GRSZsbPmoRFVxDtoo1ouphKYLfx0RAxsQtPWYFiymfZuELjaWpa0A5flJQzU1RxgBjNyf/++dMp7lUV+UdTbnyANOO1V2m2sM/+JeBdikglF1ptnTaIQvGam/z/R1RQpR7APBrYm5at6WNbptq6k3x3g7OYcoF2G42OCVQJ/buMqUTNPgAF4TBbcXZidSpmIBy1Dx6+9mlWsc3mPwA0scZEiTtiRCpwq2Z04WfH7t1W6fB+T4Gs5VuOC6z+SV+QsxIsOyvVA9zaDVmVKTEOAmA2SwzFKihrnhOKD3QP9b2vO/jdkXMVlHBeK2ksNq3ZL9PbfSENf5kqysBoMnQ1hcrYZ62o5AqoIjpaInMll6G+EgPYem7PMGiwrBs2QeAu26nXHVnCiBhyZDoNcQ=
   on:
     tags: false
     repo: frankrafael/injectjs
