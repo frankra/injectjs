@@ -41,15 +41,29 @@ describe("src.core.Import.prototype - Inspection",function(){
 				chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sBranchAlias.split('.')).path).to.equal(sBranchPhysicalPath);
 			});
 
-			it("Should use the last valid mapping node in case it reaches a node without mapping",function(){
-				var sAlias = 'app.src';
-				var sPhysicalPath = '/Application/src';
-				var sUnknownAlias = 'app.src.unmapped.alias';
-				var sExpectedAbsolutePath = process.cwd() + sPhysicalPath + '/unmapped/alias';
+			it("Should fallback to the last node containing a path mapping, if the current resolved node does not have it.",function(){
+				/*This is an edge case. Given that you have mapped the path like 'app.src',
+					the framework will basically create two nodes on the mapping tree in which the last one
+					is containing the 'path' attribute, which contains the physical path to the source(s).
+					Now if you add a new mapping which extends the previous one, like 'app.src.core.services.security',
+					again the last node will have the mapping, but now all nodes in between the 'src' node and 'security' node
+					won't have any mapping, because it was not explicitely defined. The solution for these cases is fallback to
+					the last valid node. See test:
+				*/
 
-				injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+				var sBaseAppAlias = 'app.src';
+				var sBaseAppPath = '/Application/src';
 
-				chai.expect(injectjs.core.Import.getAbsolutePath(sUnknownAlias)).to.equal(sExpectedAbsolutePath);
+				var sAppEnhancedAlias = 'app.src.core.services.security';
+				var sAppEnhancedPath = '/Another/Application/Mapping';
+
+				var sAliasRequested = 'app.src.core.MyCoreModule';
+				var sExpectedAbsolutePath = process.cwd() + sBaseAppPath/*Because it is defined by the last valid node*/ + '/core/MyCoreModule';
+
+				injectjs.core.Import.mapModulePath(sBaseAppAlias,sBaseAppPath);
+				injectjs.core.Import.mapModulePath(sAppEnhancedAlias,sAppEnhancedPath);
+
+				chai.expect(injectjs.core.Import.getAbsolutePath(sAliasRequested)).to.equal(sExpectedAbsolutePath);
 			});
 
 			it("Should should throw an error if the path was indeed not mapped",function(){
