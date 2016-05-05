@@ -40,5 +40,8 @@
   "files": [
     "bin",
     "src"
-  ]
+  ],
+  "dependencies": {
+    "istanbul": "^0.4.3"
+  }
 }
