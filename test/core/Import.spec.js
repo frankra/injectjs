@@ -67,6 +67,7 @@ describe("src.core.Import.prototype - Inspection",function(){
 		});
 
 		describe("src.core.Import.prototype - Import module",function(){
+
 			it("Should provide a Promise for the module required",function(){
 				injectjs.core.Import.module('injectjs.base.Class').then(function(fnClass){
 					chai.expect(fnClass).to.not.equal(undefined);

@@ -104,8 +104,12 @@ module.exports = function(fnResolve){
 
 		oPromise.then(function(){
 			clearTimeout(iTimeoutID);
-		}).catch(function(){
-			console.error('Error while loading module with alias "' + sRequiredAlias + '": ',arguments);
+		}).catch(function(oError){
+			console.error(//This should be handled properly.
+				'Error while loading module: ' + sRequiredAlias,
+				'Original Error Message: ' + oError.message,
+				oError.stack
+			);
 		});
 
 		return oPromise;
