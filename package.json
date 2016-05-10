@@ -6,9 +6,10 @@
   "scripts": {
     "preinstall": "rm -f .git/hooks/prepare-commit-msg.sample && ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
     "testrunner": "mocha -w --recursive test*/*",
-    "test": "mocha test*/*",
+    "test": "mocha --require blanket -R mocha-spec-cov-alt",
     "jshint": "./githooks/prepare-commit-msg",
-    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt test/*"
+    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*",
+    "test-html-cov": "mocha --require blanket -R html-cov > coverage.html"
   },
   "bin": {
     "injectjs": "bin/client"
@@ -45,5 +46,23 @@
   "files": [
     "bin",
     "src"
-  ]
+  ],
+  "config": {
+    "blanket": {
+      "data-cover-never": [
+        "node_modules"
+      ],
+      "pattern": [
+        "lib",
+        "YOUR",
+        "MODULE",
+        "DIRECTORIES",
+        "HERE"
+      ],
+      "spec-cov": {
+        "threshold": 80,
+        "localThreshold": 80
+      }
+    }
+  }
 }
