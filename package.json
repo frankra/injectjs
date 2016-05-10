@@ -4,10 +4,10 @@
   "description": "A NodeJS Dependency Management Framework",
   "main": "src/core/Core.js",
   "scripts": {
-    "preinstall": "rm -f .git/hooks/pre-commit.sample && ln -s -f ../../githooks/pre-commit .git/hooks/pre-commit",
+    "preinstall": "rm -f .git/hooks/prepare-commit-msg.sample && ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
     "testrunner": "mocha -w --recursive test*/*",
     "test": "mocha test*/*",
-    "jshint": "./githooks/pre-commit",
+    "jshint": "./githooks/prepare-commit-msg",
     "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt test/*"
   },
   "bin": {
