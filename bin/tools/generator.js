@@ -33,7 +33,7 @@ module.exports = function(sPath){
 				    }
 				});
 			}
-		}
+		};
 	}
 
 	return true;
