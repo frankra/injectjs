@@ -3,7 +3,6 @@ module.exports = function(sPath){
 
 	if (!sPath){
 		//If nothing is provided, use the working directory as path;
-		console.log('Using process.cwd() to determine path.')
 		sPath = process.cwd();
 	}
 	//Load test dependencies
@@ -27,4 +26,4 @@ module.exports = function(sPath){
 	oUtils.setObject('define', fnDefine);
 
 	oImport.mapModulePath('injectjs','/node_modules/node-injectjs/src');
-}
+};

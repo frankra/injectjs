@@ -7,7 +7,7 @@ module.exports = function(fnResolve){
 	function Import(){
 		this._mPathTree = {};
 		this._base = process.cwd();
-	};
+	}
 	/**
 	* Maps the given sAlias to the given sPhysicalPath.
 	* Example: Import.mapModulePath('my.test.module.path','/src/files');
@@ -37,16 +37,16 @@ module.exports = function(fnResolve){
 			//BTW - ES6 will improve tail calculation \o/
 			this._setRegisterFromAlias(oNavigator,aAliasParts,sAlias,sPhysicalPath);
 		}else {
-			oNavigator.path = sPhysicalPath
+			oNavigator.path = sPhysicalPath;
 			oNavigator.alias = sAlias;
-		};
+		}
 	};
 	//Recursive Function
 	Import.prototype._getRegisterFromAlias = function(oNavigator,aAliasParts,oLastValidNode,sOriginalAlias){
 		var sPart = aAliasParts.splice(0,1)[0];
 		if (oNavigator.path){
 			oLastValidNode = oNavigator;
-		};
+		}
 
 		if (sPart && oNavigator.hasOwnProperty(sPart)){
 			oNavigator = oNavigator[sPart];
@@ -76,7 +76,7 @@ module.exports = function(fnResolve){
 		var sWithJSSuffix = bAddJSSuffix ? sDotsReplaced.concat('.js') : sDotsReplaced;
 		var sWithBasePrefix = this._base + sWithJSSuffix;
 		return sWithBasePrefix;
-	}
+	};
 	/**
 	* Requires the module defined by the given Alias, so when requiring
 	* custom dependencies only the Alias or at least part of it needs to be provided.
@@ -95,10 +95,10 @@ module.exports = function(fnResolve){
 	*/
 	Import.prototype.module = function(sRequiredAlias){
 		var iTimeoutID = setTimeout(function(){
-			console.log('Dependency taking too long to load: ', sRequiredAlias)
+			console.log('Dependency taking too long to load: ', sRequiredAlias);
 		},2000);
 
-		var oPromise = new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
+		var oPromise = new Promise(injectjs.core.Utils.proxy(function(fnResolve){
 			require(this._assembleRequirePath(sRequiredAlias,true))(fnResolve);
 		},this));
 
@@ -131,5 +131,4 @@ module.exports = function(fnResolve){
 		fnResolve(oImport);
 	}
 	return oImport;
-
-}
+};

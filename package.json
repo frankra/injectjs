@@ -4,9 +4,11 @@
   "description": "A NodeJS Dependency Management Framework",
   "main": "src/core/Core.js",
   "scripts": {
-    "preinstall": "ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
+    "preinstall": "rm -f .git/hooks/pre-commit.sample && ln -s -f ../../githooks/pre-commit .git/hooks/pre-commit",
     "testrunner": "mocha -w --recursive test*/*",
-    "test": "mocha test*/*"
+    "test": "mocha test*/*",
+    "jshint": "./githooks/pre-commit",
+    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt test/*"
   },
   "bin": {
     "injectjs": "bin/client"
@@ -32,7 +34,10 @@
     "grunt": "^0.4.5",
     "grunt-exec": "^0.4.6",
     "gruntify-eslint": "^2.0.0",
+    "istanbul": "^0.4.3",
+    "jshint": "^2.9.2",
     "mocha": "^2.2.5",
+    "mocha-spec-cov-alt": "^1.1.1",
     "mongodb": "^2.0.33",
     "node-gcm": "^0.9.15",
     "socket.io": "^1.3.5"

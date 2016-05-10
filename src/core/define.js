@@ -22,7 +22,7 @@ module.exports = function(NodeDependencyManager,Import){
 					Import.module(aDependencies[i])
 				);
 			}
-		};
+		}
 		//When all modules are loaded, apply them on the implementation function
 		Promise.all(aModulePromises).then(function(aModules){
 			fnImplementation.apply(fnImplementation,aModules);
@@ -30,6 +30,6 @@ module.exports = function(NodeDependencyManager,Import){
 			//This should be handled properly...
 			console.log('Error while executing callback from define API: ',e.stack);
 		});
-	};
+	}
 	return define;
 };

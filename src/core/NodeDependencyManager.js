@@ -1,5 +1,5 @@
 (function(){
-	"use strict"
+	"use strict";
 
 	function NodeDependencyManager(mParameters){
 		if (!mParameters){
@@ -14,7 +14,7 @@
 		);
 
 		return this;
-	};
+	}
 
 	NodeDependencyManager.prototype.getConfig = function(){
 		return this._mConfig;
@@ -22,7 +22,7 @@
 
 	NodeDependencyManager.prototype.getDependency = function(sAlias){
 		if (this._mConfig.hasOwnProperty(sAlias)){
-			return new Promise(injectjs.core.Utils.proxy(function(fnResolve,fnReject){
+			return new Promise(injectjs.core.Utils.proxy(function(fnResolve){
 				fnResolve(this._fetchDependencyByAlias(sAlias));
 			},this));
 		}else {
@@ -68,10 +68,10 @@
 				this._fetchDependencyByAlias(
 					aRequiredArguments[i].alias
 				)
-			)
+			);
 		}
 		return aLoadedArguments;
-	}
+	};
 
 	module.exports = NodeDependencyManager;
 }());
