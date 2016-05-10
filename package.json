@@ -46,23 +46,5 @@
   "files": [
     "bin",
     "src"
-  ],
-  "config": {
-    "blanket": {
-      "data-cover-never": [
-        "node_modules"
-      ],
-      "pattern": [
-        "lib",
-        "YOUR",
-        "MODULE",
-        "DIRECTORIES",
-        "HERE"
-      ],
-      "spec-cov": {
-        "threshold": 80,
-        "localThreshold": 80
-      }
-    }
-  }
+  ]
 }
