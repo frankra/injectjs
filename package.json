@@ -6,7 +6,7 @@
   "scripts": {
     "preinstall": "rm -f .git/hooks/prepare-commit-msg.sample && ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
     "testrunner": "mocha -w --recursive test*/*",
-    "test": "mocha --require blanket -R mocha-spec-cov-alt",
+    "test": "mocha --recursive test*/*",
     "jshint": "./githooks/prepare-commit-msg",
     "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*",
     "test-html-cov": "mocha --require blanket -R html-cov > coverage.html"
