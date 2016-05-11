@@ -7,6 +7,7 @@ module.exports = function(fnResolve){
 	function Import(){
 		this._mPathTree = {};
 		this._base = process.cwd();
+		this._mCachedPromises = {};
 	}
 	/**
 	* Maps the given sAlias to the given sPhysicalPath.
@@ -94,25 +95,30 @@ module.exports = function(fnResolve){
 	*	The promise that will be resolved once the module is loaded
 	*/
 	Import.prototype.module = function(sRequiredAlias){
-		var iTimeoutID = setTimeout(function(){
-			console.log('Dependency taking too long to load: ', sRequiredAlias);
-		},2000);
 
-		var oPromise = new Promise(injectjs.core.Utils.proxy(function(fnResolve){
-			require(this._assembleRequirePath(sRequiredAlias,true))(fnResolve);
-		},this));
+		if (!this._mCachedPromises.hasOwnProperty(sRequiredAlias)){
+			var iTimeoutID = setTimeout(function(){
+				console.log('Dependency taking too long to load: ', sRequiredAlias);
+			},2000);
 
-		oPromise.then(function(){
-			clearTimeout(iTimeoutID);
-		}).catch(function(oError){
-			console.error(//This should be handled properly.
-				'Error while loading module: ' + sRequiredAlias,
-				'Original Error Message: ' + oError.message,
-				oError.stack
-			);
-		});
+			var oPromise = new Promise(function(fnResolve){
+				require(this._assembleRequirePath(sRequiredAlias,true))(fnResolve);
+			}.bind(this));
 
-		return oPromise;
+			oPromise.then(function(){
+				clearTimeout(iTimeoutID);
+			}).catch(function(oError){
+				console.error(//This should be handled properly.
+					'Error while loading module: ' + sRequiredAlias,
+					'Original Error Message: ' + oError.message,
+					oError.stack
+				);
+			});
+
+			this._mCachedPromises[sRequiredAlias] = oPromise;
+		}
+		
+		return this._mCachedPromises[sRequiredAlias];
 	};
 
 	Import.prototype.getAbsolutePath = function(sAlias){
