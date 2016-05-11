@@ -1,0 +1,10 @@
+{
+  "curly": true,
+  "unused": true,
+	"freeze": true,
+	"maxcomplexity": 8,
+	"maxdepth": 3,
+	"strict": true,
+  "validthis" : true,
+	"-W093": true
+}

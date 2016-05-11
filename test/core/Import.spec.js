@@ -81,12 +81,24 @@ describe("src.core.Import.prototype - Inspection",function(){
 		});
 
 		describe("src.core.Import.prototype - Import module",function(){
+			beforeEach(function(){
+				chai.spy.on(injectjs.core.Import,'_assembleRequirePath');
+				injectjs.core.Import._mCachedPromises = {}; //Clear Cache
+			});
+			afterEach(function(){
+				injectjs.core.Import._assembleRequirePath.reset();
+			});
 
 			it("Should provide a Promise for the module required",function(){
-				injectjs.core.Import.module('injectjs.base.Class').then(function(fnClass){
-					chai.expect(fnClass).to.not.equal(undefined);
-					done();
-				});
+				chai.expect(injectjs.core.Import.module('injectjs.base.Class') instanceof Promise).to.equal(true);
+			});
+
+			it("Should cache the Promise and return it if the same module is requested again without loading it again",function(){
+				var oFirstPromise = injectjs.core.Import.module('injectjs.base.Class');
+
+				chai.expect(injectjs.core.Import.module('injectjs.base.Class')).to.equal(oFirstPromise);
+
+				chai.expect(injectjs.core.Import._assembleRequirePath).to.have.been.called.exactly(1);
 			});
 		});
 

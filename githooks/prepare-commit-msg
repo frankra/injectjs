@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "---------------------------------"
+echo "Running JSHint \n"
+./node_modules/jshint/bin/jshint src/ bin/
+echo "---------------------------------"

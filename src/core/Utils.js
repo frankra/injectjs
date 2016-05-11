@@ -1,12 +1,12 @@
 module.exports = function(fnResolve){
 	"use strict";
 
-	function Utils(){};
+	function Utils(){}
 
 	Utils.prototype.proxy = function(fnToBeProxied,oProxyContext,aArguments){
 		return function(){
 			return fnToBeProxied.apply(oProxyContext,aArguments ? Array.prototype.slice.call(arguments).concat(aArguments) : arguments);
-		}
+		};
 	};
 	Utils.prototype.setObject = function(sNamespace, fnConstructor){
 		var aSplittedNamespace = sNamespace.split('.');
@@ -17,7 +17,7 @@ module.exports = function(fnResolve){
 			}else {
 				oNavigator = (oNavigator[aSplittedNamespace[i]] = {});
 			}
-		};
+		}
 		//Set the constructor of the class to the last node of the namespace
 		oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = fnConstructor;
 	};

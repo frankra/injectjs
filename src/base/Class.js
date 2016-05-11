@@ -1,10 +1,26 @@
+function _createNamespace(sNamespace, fnConstructor){
+	"use strict";
+
+	var aSplittedNamespace = sNamespace.split('.');
+	var oNavigator = global;
+	for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){
+		if (oNavigator.hasOwnProperty(aSplittedNamespace[i])){
+			oNavigator = oNavigator[aSplittedNamespace[i]];
+		}else {
+			oNavigator = (oNavigator[aSplittedNamespace[i]] = {});
+		}
+	}
+	//Set the constructor of the class to the last node of the namespace
+	oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = fnConstructor;
+}
+
 module.exports = function(fnResolve){
 	"use strict";
 	/**
 	* Base Class
 	* @class Class
 	*/
-	function Class(){};
+	function Class(){}
 	/**
 	* Hook function called by the constructor of the Class and its children classes.
 	* @public
@@ -25,7 +41,7 @@ module.exports = function(fnResolve){
 				throw new Error("Constructor called as a function. You forgot the 'new' keyword.");
 			}
 			this.init.apply(this,arguments);
-		};
+		}
 		//Copy the prototype of this (Class) into the fnClass (temp)
 		fnClass.prototype = Object.create(this.prototype);
 		fnClass.prototype.constructor = fnClass;
@@ -39,26 +55,11 @@ module.exports = function(fnResolve){
 		});
 		//Navigate to the given sNamespace if existent, else create it.
 		_createNamespace(sNamespace, fnClass);
-	}
+	};
 	//Add the Class to the injectjs namespace
 	_createNamespace('injectjs.base.Class',Class);
 	//If this was requested through the dependency management engine, resolve it, otherwise do nothing
 	if(fnResolve){
 		fnResolve(Class);
 	}
-};
-function _createNamespace(sNamespace, fnConstructor){
-	"use strict";
-	
-	var aSplittedNamespace = sNamespace.split('.');
-	var oNavigator = global;
-	for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){
-		if (oNavigator.hasOwnProperty(aSplittedNamespace[i])){
-			oNavigator = oNavigator[aSplittedNamespace[i]];
-		}else {
-			oNavigator = (oNavigator[aSplittedNamespace[i]] = {});
-		}
-	};
-	//Set the constructor of the class to the last node of the namespace
-	oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = fnConstructor;
 };
