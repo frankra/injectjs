@@ -4,7 +4,7 @@
   "description": "A NodeJS Dependency Management Framework",
   "main": "src/core/Core.js",
   "scripts": {
-    "preinstall": "rm -f .git/hooks/prepare-commit-msg.sample && ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
+    "githooks": "rm -f .git/hooks/prepare-commit-msg.sample && ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
     "testrunner": "mocha -w --recursive test*/*",
     "test": "mocha --recursive test*/*",
     "jshint": "./githooks/prepare-commit-msg",
