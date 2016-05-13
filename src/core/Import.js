@@ -95,7 +95,6 @@ module.exports = function(fnResolve){
 	*	The promise that will be resolved once the module is loaded
 	*/
 	Import.prototype.module = function(sRequiredAlias){
-
 		if (!this._mCachedPromises.hasOwnProperty(sRequiredAlias)){
 			var iTimeoutID = setTimeout(function(){
 				console.log('Dependency taking too long to load: ', sRequiredAlias);
@@ -105,8 +104,10 @@ module.exports = function(fnResolve){
 				require(this._assembleRequirePath(sRequiredAlias,true))(fnResolve);
 			}.bind(this));
 
-			oPromise.then(function(){
+			oPromise.then(function(oModule){
 				clearTimeout(iTimeoutID);
+
+				return oModule;
 			}).catch(function(oError){
 				console.error(//This should be handled properly.
 					'Error while loading module: ' + sRequiredAlias,
@@ -117,7 +118,7 @@ module.exports = function(fnResolve){
 
 			this._mCachedPromises[sRequiredAlias] = oPromise;
 		}
-		
+
 		return this._mCachedPromises[sRequiredAlias];
 	};
 
