@@ -1,8 +1,8 @@
 module.exports = function(fnResolve){
 	"use strict";
 	/**
-	* Import module resolver
-	* @class Import
+	* Import module resolver. Resolves the custom javascript modules that are defined using the InjectJS Module definition pattern.
+	* @class injectjs.core.Import
 	*/
 	function Import(){
 		this._mPathTree = {};
@@ -16,9 +16,10 @@ module.exports = function(fnResolve){
 	*		Name of the alias to be defined, splitted by dots '.'
 	* @param {String} sPhysicalPath
 	*		The actual physical path where the files are located, or at least part of it
-	* @return {this} Import
-	*		To allow chain usage
+	* @return {injectjs.core.Import} this
+	*		The current instance to allow method chaining
 	* @public
+	* @memberOf injectjs.core.Import
 	*/
 	Import.prototype.mapModulePath = function(sAlias,sPhysicalPath){
 		var aAliasParts = sAlias.split('.');
@@ -34,8 +35,6 @@ module.exports = function(fnResolve){
 			}else {
 				oNavigator = oNavigator[sPart];
 			}
-			//Recursion can cause Stack-overflow errors. JS don't support tail calculation
-			//BTW - ES6 will improve tail calculation \o/
 			this._setRegisterFromAlias(oNavigator,aAliasParts,sAlias,sPhysicalPath);
 		}else {
 			oNavigator.path = sPhysicalPath;
@@ -93,9 +92,9 @@ module.exports = function(fnResolve){
 	*	The alias to be resolved into the physical path and be required as a module
 	* @return {Promise} Promise
 	*	The promise that will be resolved once the module is loaded
+	* @memberOf injectjs.core.Import
 	*/
 	Import.prototype.module = function(sRequiredAlias){
-
 		if (!this._mCachedPromises.hasOwnProperty(sRequiredAlias)){
 			var iTimeoutID = setTimeout(function(){
 				console.log('Dependency taking too long to load: ', sRequiredAlias);
@@ -105,8 +104,10 @@ module.exports = function(fnResolve){
 				require(this._assembleRequirePath(sRequiredAlias,true))(fnResolve);
 			}.bind(this));
 
-			oPromise.then(function(){
+			oPromise.then(function(oModule){
 				clearTimeout(iTimeoutID);
+
+				return oModule;
 			}).catch(function(oError){
 				console.error(//This should be handled properly.
 					'Error while loading module: ' + sRequiredAlias,
@@ -117,10 +118,17 @@ module.exports = function(fnResolve){
 
 			this._mCachedPromises[sRequiredAlias] = oPromise;
 		}
-		
+
 		return this._mCachedPromises[sRequiredAlias];
 	};
-
+	/**
+	*	Returns the Absolute path of the module mapped to the given alias, if existent
+	* @param {String} sAlias
+	* The alias to be used to resolve the Absolute path. e.g.: 'app.src.services'
+	* @return {String}
+	* The absolute path mapped by the given alias. e.g.: '/app/src/main/services'
+	* @memberOf injectjs.core.Import
+	*/
 	Import.prototype.getAbsolutePath = function(sAlias){
 		return this._assembleRequirePath(sAlias,false);
 	};

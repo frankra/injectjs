@@ -4,12 +4,11 @@
   "description": "A NodeJS Dependency Management Framework",
   "main": "src/core/Core.js",
   "scripts": {
-    "preinstall": "rm -f .git/hooks/prepare-commit-msg.sample && ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
+    "githooks": "rm -f .git/hooks/prepare-commit-msg.sample && ln -s -f ../../githooks/prepare-commit-msg .git/hooks/prepare-commit-msg",
     "testrunner": "mocha -w --recursive test*/*",
     "test": "mocha --recursive test*/*",
     "jshint": "./githooks/prepare-commit-msg",
-    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*",
-    "test-html-cov": "mocha --require blanket -R html-cov > coverage.html"
+    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*"
   },
   "bin": {
     "injectjs": "bin/client"
@@ -25,7 +24,6 @@
   },
   "homepage": "https://github.com/frankrafael/injectjs#readme",
   "devDependencies": {
-    "bithound": "^1.2.0",
     "body-parser": "^1.13.1",
     "chai": "^3.2.0",
     "chai-spies": "^0.7.0",
@@ -33,6 +31,7 @@
     "express": "^4.12.3",
     "express-session": "^1.11.3",
     "istanbul": "^0.4.3",
+    "jsdoc": "^3.4.0",
     "jshint": "^2.9.2",
     "mocha": "^2.2.5",
     "mocha-spec-cov-alt": "^1.1.1",

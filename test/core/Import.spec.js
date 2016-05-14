@@ -100,6 +100,19 @@ describe("src.core.Import.prototype - Inspection",function(){
 
 				chai.expect(injectjs.core.Import._assembleRequirePath).to.have.been.called.exactly(1);
 			});
+
+			it("Should return the same module on the promise",function(done){
+				define(['injectjs.base.Class','injectjs.base.Class','injectjs.base.Class'],function(Class1,Class2,Class3){
+
+					chai.expect(typeof Class1).to.equal("function");
+					chai.expect(typeof Class2).to.equal("function");
+					chai.expect(typeof Class3).to.equal("function");
+
+					chai.expect(Class1 === Class2 && Class2  === Class3).to.equal(true);
+					done();
+				});
+			});
+
 		});
 
 		describe("src.core.Import.prototype - Transform Alias to Path",function(){
