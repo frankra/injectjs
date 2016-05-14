@@ -3,7 +3,7 @@ node_js:
 - 4.0.0
 - 5.8.0
 - 6.1.0
-after_script: node build_scripts/update_jsdoc.js
+after_success: node build_scripts/update_jsdoc.js
 deploy:
   provider: npm
   email: franktestrlz@gmail.com
