@@ -32,6 +32,7 @@
     "express": "^4.12.3",
     "express-session": "^1.11.3",
     "istanbul": "^0.4.3",
+    "jsdoc": "^3.4.0",
     "jshint": "^2.9.2",
     "mocha": "^2.2.5",
     "mocha-spec-cov-alt": "^1.1.1",
