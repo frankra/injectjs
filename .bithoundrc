@@ -1,5 +1,5 @@
 {
-	"test": [
+	"ignore": [
     "test/**",
     "test_bin/**"
   ]
