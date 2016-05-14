@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/frankrafael/injectjs#readme",
   "devDependencies": {
-    "bithound": "^1.2.0",
     "body-parser": "^1.13.1",
     "chai": "^3.2.0",
     "chai-spies": "^0.7.0",
