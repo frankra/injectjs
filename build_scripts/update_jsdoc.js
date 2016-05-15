@@ -23,11 +23,15 @@
 			exec(`./node_modules/jsdoc/jsdoc.js src/* -d ${APIFolderName}`,(error, stdout, stderr) => {
 				pipe(error, stdout, stderr, `Generating API Documentation into ${APIFolderName}`);
 
-				exec('git commit --all -m "Updating documentation"', {cwd: APIFolderName},(error, stdout, stderr) => {
-					pipe(error, stdout, stderr, 'Committing');
+				exec('git add --all', {cwd: APIFolderName},(error, stdout, stderr) => {
+					pipe(error, stdout, stderr, `Add all files`);
 
-					exec('git push origin gh-pages', {cwd: APIFolderName},(error, stdout, stderr) => {
-						pipe(error, stdout, stderr, `push to origin gh-pages`);
+					exec('git commit -m "Updating documentation"', {cwd: APIFolderName},(error, stdout, stderr) => {
+						pipe(error, stdout, stderr, 'Committing');
+
+						exec('git push origin gh-pages', {cwd: APIFolderName},(error, stdout, stderr) => {
+							pipe(error, stdout, stderr, `push to origin gh-pages`);
+						});
 					});
 				});
 			});
