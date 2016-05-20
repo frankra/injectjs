@@ -13,8 +13,8 @@
 	*     "execute" : false
 	*   },
 	*   "App": {
-	*	    "name" : "express",
-	*	    "execute" : true
+	*    "name" : "express",
+	*    "execute" : true
 	*   },
 	*   "HTTP": {
 	*     "name" : "http",
@@ -53,6 +53,7 @@
 		//Init internal attributes
 		this._oFS = require('fs');
 		this._sFilePath = mParameters.path;
+		this._mPromisesCache = {};
 		this._mLoadedDependencies = {};
 		this._mConfig = JSON.parse(
 			this._oFS.readFileSync(mParameters.path, 'utf8')
@@ -80,12 +81,25 @@
 	*/
 	NodeDependencyManager.prototype.getDependency = function(sAlias){
 		if (this._mConfig.hasOwnProperty(sAlias)){
-			return new Promise(injectjs.core.Utils.proxy(function(fnResolve){
-				fnResolve(this._fetchDependencyByAlias(sAlias));
-			},this));
+			if (!this._mPromisesCache.hasOwnProperty(sAlias)){
+				this._mPromisesCache[sAlias] = new Promise(function(fnResolve){
+					fnResolve(this._fetchDependencyByAlias(sAlias));
+				}.bind(this));
+			}
+			return this._mPromisesCache[sAlias];
 		}else {
 			throw new Error('Dependency with alias: "'+ sAlias +'" is not registered, please check dependency map on: ' + this._sFilePath);
 		}
+	};
+
+	NodeDependencyManager.prototype.setTestDouble = function(sDependency,oTestDouble){
+		this._mLoadedDependencies[sDependency] = oTestDouble;
+		return this;
+	};
+
+	NodeDependencyManager.prototype.removeTestDouble = function(sDependency){
+		delete this._mLoadedDependencies[sDependency];
+		return this;
 	};
 
 	NodeDependencyManager.prototype._fetchDependencyByAlias = function(sAlias){
@@ -118,7 +132,7 @@
 		return require(sModuleName); //Sync
 	};
 
-	 NodeDependencyManager.prototype._loadRequiredArguments = function(aRequiredArguments){
+	NodeDependencyManager.prototype._loadRequiredArguments = function(aRequiredArguments){
 		var aLoadedArguments = [];
 
 		for(var i = 0, ii = aRequiredArguments.length; i < ii; i++){
