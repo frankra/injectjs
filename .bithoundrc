@@ -1,11 +1,11 @@
 {
-	"ignore": [
+  "ignore": [
     "test/**",
     "test_bin/**"
   ],
-	"critics": {
-		"lint": {
-			"engine": "jshint"
-		}
-	}
+  "critics": {
+    "lint": {
+      "engine": "jshint"
+    }
+  }
 }

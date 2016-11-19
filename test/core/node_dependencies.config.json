@@ -1,53 +1,53 @@
 {
-	"oExpress": {
-		"name" : "express",
-		"execute" : false
-	},
-	"oApp": {
-		"name" : "express",
-		"execute" : true
-	},
-	"oBodyParser": {
-		"name" : "body-parser",
-		"execute" : false
-	},
-	"oSession": {
-		"name" : "express-session",
-		"execute" : false
-	},
-	"MongoStore": {
-		"name" : "connect-mongo",
-		"execute" : true,
-		"executionArguments" : [{
-			"alias" : "oSession"
-		}]
-	},
-	"oHTTP": {
-		"name" : "http",
-		"execute" : true,
-		"executionPath" : "Server",
-		"executionArguments" : [{
-			"alias" : "oApp"
-		}]
-	},
-	"oSocketIO": {
-		"name" : "socket.io",
-		"execute" : true,
-		"executionArguments" : [{
-			"alias" : "oHTTP"
-		}]
-	},
-	"oGCM": {
-		"name" : "node-gcm",
-		"useFactory" : false,
-		"execute" : false
-	},
-	"oFS": {
-		"name" : "fs",
-		"execute" : false
-	},
-	"oMongoDB": {
-		"name" : "mongodb",
-		"execute" : false
-	}
+  "oExpress": {
+    "name" : "express",
+    "execute" : false
+  },
+  "oApp": {
+    "name" : "express",
+    "execute" : true
+  },
+  "oBodyParser": {
+    "name" : "body-parser",
+    "execute" : false
+  },
+  "oSession": {
+    "name" : "express-session",
+    "execute" : false
+  },
+  "MongoStore": {
+    "name" : "connect-mongo",
+    "execute" : true,
+    "executionArguments" : [{
+      "alias" : "oSession"
+    }]
+  },
+  "oHTTP": {
+    "name" : "http",
+    "execute" : true,
+    "executionPath" : "Server",
+    "executionArguments" : [{
+      "alias" : "oApp"
+    }]
+  },
+  "oSocketIO": {
+    "name" : "socket.io",
+    "execute" : true,
+    "executionArguments" : [{
+      "alias" : "oHTTP"
+    }]
+  },
+  "oGCM": {
+    "name" : "node-gcm",
+    "useFactory" : false,
+    "execute" : false
+  },
+  "oFS": {
+    "name" : "fs",
+    "execute" : false
+  },
+  "oMongoDB": {
+    "name" : "mongodb",
+    "execute" : false
+  }
 }
