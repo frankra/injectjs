@@ -43,14 +43,14 @@ module.exports = function(fnResolve){
       this._cacheModulePromise(sAlias, vModule);
     }else {
       this._cacheModulePromise(sAlias,
-        new Promise(fnResolve=>{
+        new Promise(function(fnResolve){
           fnResolve(vModule);
         })
       );
     }
 
     return this;
-  }
+  };
 
   Import.prototype._setRegisterFromAlias = function(oNavigator,aAliasParts,sAlias,sPhysicalPath){
     var sPart = aAliasParts.splice(0,1)[0];
@@ -105,7 +105,7 @@ module.exports = function(fnResolve){
 
   Import.prototype._cacheModulePromise = function(sKey, oModulePromise){
     this._mCachedPromises[sKey] = oModulePromise;
-  }
+  };
   /**
   * Requires the module defined by the given Alias, so when requiring
   * custom dependencies only the Alias or at least part of it needs to be provided.
