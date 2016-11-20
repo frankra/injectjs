@@ -14,6 +14,7 @@
 2. Then run: `injectjs init` in order to bootstrap the application.
 
 #### Implementation
-
+Coming soon..
 
 ### Wiki and Documentation
+[Link to JSDoc](http://frankrafael.github.io/injectjs-api-documentation/)
