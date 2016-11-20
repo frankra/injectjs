@@ -1,5 +1,11 @@
 #!/bin/sh
 echo "---------------------------------"
 echo "Running JSHint \n"
-./node_modules/jshint/bin/jshint src/ bin/
+./node_modules/jshint/bin/jshint src
+if [ "$?" = "0" ]; then
+  echo "No errors! Congrats!";
+else
+  echo "\nCommit aborted, please fix errors before committing!";
+  exit 1;
+fi
 echo "---------------------------------"
