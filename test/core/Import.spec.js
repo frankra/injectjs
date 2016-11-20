@@ -4,7 +4,7 @@ describe("src.core.Import.prototype - Inspection",function(){
     require('./../bootstrap.js')();
   });
 
-  it("Should be a singleton",function(done){
+  it("Should be a singvaron",function(done){
     injectjs.core.Import.module('injectjs.core.Import').then(function(oImport){
       chai.expect(injectjs.core.Import).to.equal(oImport);
       done();
@@ -89,45 +89,45 @@ describe("src.core.Import.prototype - Inspection",function(){
 
       it("Should inject the module in the modules cache as a promise, even though the module is not a promise",function(done){
         var sAlias = 'app.src.core.files';
-        let oModule = {
+        var oModule = {
           test: true
         };
 
         injectjs.core.Import.setModule(sAlias,oModule);//Call API
 
-        let oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
+        var oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
         chai.expect(
           oCachedPromise instanceof Promise
         ).to.equal(true);
 
-        oCachedPromise.then(oCachedModule=>{
+        oCachedPromise.then(function(oCachedModule){
           chai.expect(oCachedModule).to.deep.equal(oModule);
           done();
         })
-        .catch(oAssertionError=>{
+        .catch(function(oAssertionError){
           console.log(oAssertionError);
         });
       });
       it("Should just register the module on the cache if it is a promise already",function(done){
         var sAlias = 'app.src.core.files';
-        let oModule = {
+        var oModule = {
           test: true
         };
-        let oModulePromise = new Promise(fnResolve=>{
+        var oModulePromise = new Promise(function(fnResolve){
           fnResolve(oModule);
         })
 
         injectjs.core.Import.setModule(sAlias,oModulePromise);//Call API
 
-        let oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
+        var oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
         chai.expect(oModulePromise).to.deep.equal(oCachedPromise);
 
 
-        oCachedPromise.then(oCachedModule=>{
+        oCachedPromise.then(function(oCachedModule){
           chai.expect(oCachedModule).to.deep.equal(oModule);
           done();
         })
-        .catch(oAssertionError=>{
+        .catch(function(oAssertionError){
           console.log(oAssertionError);
         });
       });
@@ -171,20 +171,20 @@ describe("src.core.Import.prototype - Inspection",function(){
       });
 
       it("Should return manually set module",function(done){
-        let sPath = 'my.super.path';
-        let oModule = {test:true};
+        var sPath = 'my.super.path';
+        var oModule = {test:true};
 
         injectjs.core.Import.setModule(sPath, oModule);
 
         injectjs.core.Import.module(sPath)
-        .then(oResolvedModule=>{
+        .then(function(oResolvedModule){
           chai.expect(
             oResolvedModule
           ).to.deep.equal(oModule);
 
           done();
         })
-        .catch(oAssertionError=>{
+        .catch(function(oAssertionError){
           console.log(oAssertionError);
         })
       });
