@@ -4,7 +4,7 @@ describe("src.core.Import.prototype - Inspection",function(){
     require('./../bootstrap.js')();
   });
 
-  it("Should be a singleton",function(){
+  it("Should be a singleton",function(done){
     injectjs.core.Import.module('injectjs.core.Import').then(function(oImport){
       chai.expect(injectjs.core.Import).to.equal(oImport);
       done();
@@ -12,7 +12,7 @@ describe("src.core.Import.prototype - Inspection",function(){
   });
 
   describe("src.core.Import.prototype - API",function(){
-    describe("src.core.Import.prototype - Module Mapping",function(){
+    describe("src.core.Import.prototype - Map module path",function(){
 
       beforeEach(function(){
         injectjs.core.Import._mPathTree = {}; //Clear Mapping
@@ -80,6 +80,59 @@ describe("src.core.Import.prototype - Inspection",function(){
       });
     });
 
+    describe("src.core.Import.prototype - Set module",function(){
+
+      beforeEach(function(){
+        injectjs.core.Import._mPathTree = {}; //Clear Mapping
+        injectjs.core.Import._mCachedPromises = {}; //Clear Cache
+      });
+
+      it("Should inject the module in the modules cache as a promise, even though the module is not a promise",function(done){
+        var sAlias = 'app.src.core.files';
+        let oModule = {
+          test: true
+        };
+
+        injectjs.core.Import.setModule(sAlias,oModule);//Call API
+
+        let oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
+        chai.expect(
+          oCachedPromise instanceof Promise
+        ).to.equal(true);
+
+        oCachedPromise.then(oCachedModule=>{
+          chai.expect(oCachedModule).to.deep.equal(oModule);
+          done();
+        })
+        .catch(oAssertionError=>{
+          console.log(oAssertionError);
+        });
+      });
+      it("Should just register the module on the cache if it is a promise already",function(done){
+        var sAlias = 'app.src.core.files';
+        let oModule = {
+          test: true
+        };
+        let oModulePromise = new Promise(fnResolve=>{
+          fnResolve(oModule);
+        })
+
+        injectjs.core.Import.setModule(sAlias,oModulePromise);//Call API
+
+        let oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
+        chai.expect(oModulePromise).to.deep.equal(oCachedPromise);
+
+
+        oCachedPromise.then(oCachedModule=>{
+          chai.expect(oCachedModule).to.deep.equal(oModule);
+          done();
+        })
+        .catch(oAssertionError=>{
+          console.log(oAssertionError);
+        });
+      });
+    });
+
     describe("src.core.Import.prototype - Import module",function(){
       beforeEach(function(){
         chai.spy.on(injectjs.core.Import,'_assembleRequirePath');
@@ -102,7 +155,11 @@ describe("src.core.Import.prototype - Inspection",function(){
       });
 
       it("Should return the same module on the promise",function(done){
-        define(['injectjs.base.Class','injectjs.base.Class','injectjs.base.Class'],function(Class1,Class2,Class3){
+        define([
+          'injectjs.base.Class',
+          'injectjs.base.Class',
+          'injectjs.base.Class'
+        ],function(Class1,Class2,Class3){
 
           chai.expect(typeof Class1).to.equal("function");
           chai.expect(typeof Class2).to.equal("function");
@@ -113,6 +170,24 @@ describe("src.core.Import.prototype - Inspection",function(){
         });
       });
 
+      it("Should return manually set module",function(done){
+        let sPath = 'my.super.path';
+        let oModule = {test:true};
+
+        injectjs.core.Import.setModule(sPath, oModule);
+
+        injectjs.core.Import.module(sPath)
+        .then(oResolvedModule=>{
+          chai.expect(
+            oResolvedModule
+          ).to.deep.equal(oModule);
+
+          done();
+        })
+        .catch(oAssertionError=>{
+          console.log(oAssertionError);
+        })
+      });
     });
 
     describe("src.core.Import.prototype - Transform Alias to Path",function(){

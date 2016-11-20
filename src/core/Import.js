@@ -27,6 +27,31 @@ module.exports = function(fnResolve){
     return this;
   };
 
+  /**
+  * Injects the given module into the cache using the alias as key.
+  * @param {String} sAlias
+  *		Name of the alias to be defined, splitted by dots '.'
+  * @param {Anything} oModule
+  *		The module to be cached. Can be anything, but ideally should be an Object, or a Promise.
+  * @return {injectjs.core.Import} this
+  *		The current instance to allow method chaining
+  * @public
+  * @memberOf injectjs.core.Import
+  */
+  Import.prototype.setModule = function(sAlias, vModule){
+    if (vModule instanceof Promise){
+      this._cacheModulePromise(sAlias, vModule);
+    }else {
+      this._cacheModulePromise(sAlias,
+        new Promise(fnResolve=>{
+          fnResolve(vModule);
+        })
+      );
+    }
+
+    return this;
+  }
+
   Import.prototype._setRegisterFromAlias = function(oNavigator,aAliasParts,sAlias,sPhysicalPath){
     var sPart = aAliasParts.splice(0,1)[0];
     if (sPart){
@@ -77,6 +102,10 @@ module.exports = function(fnResolve){
     var sWithBasePrefix = this._base + sWithJSSuffix;
     return sWithBasePrefix;
   };
+
+  Import.prototype._cacheModulePromise = function(sKey, oModulePromise){
+    this._mCachedPromises[sKey] = oModulePromise;
+  }
   /**
   * Requires the module defined by the given Alias, so when requiring
   * custom dependencies only the Alias or at least part of it needs to be provided.
@@ -116,7 +145,7 @@ module.exports = function(fnResolve){
         );
       });
 
-      this._mCachedPromises[sRequiredAlias] = oPromise;
+      this._cacheModulePromise(sRequiredAlias, oPromise);
     }
 
     return this._mCachedPromises[sRequiredAlias];
