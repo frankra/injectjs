@@ -26,11 +26,6 @@ describe("src.core.Core.prototype - Bootstrap", function() {
     chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
   });
 
-  it("Should instantiate the NodeDependencyManager.js class",function() {
-    reset();
-    chai.expect(injectjs.core.NodeDependencyManager).not.to.be.undefined;
-  });
-
   it("Should instantiate the define.js class",function() {
     reset();
     chai.expect(define).not.to.be.undefined;

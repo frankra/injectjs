@@ -1,4 +1,4 @@
-module.exports = function(NodeDependencyManager,Import){
+module.exports = function(Import){
   'use strict';
 
   /**
@@ -29,15 +29,9 @@ module.exports = function(NodeDependencyManager,Import){
     var aModulePromises = [];
     //Fetch all requird dependencies
     for (var i = 0, ii = aDependencies.length; i < ii; i++){
-      if (aDependencies[i].indexOf('$') === 0){ //Node dependency, should be mapped on node_dependencies.config.json
-        aModulePromises.push(
-          NodeDependencyManager.getDependency(aDependencies[i].replace('$','')) //remove $ from the name
-        );
-      }else { //Custom dependency, should have its path maped through the Import.mapModulePath API
-        aModulePromises.push(
-          Import.module(aDependencies[i])
-        );
-      }
+      aModulePromises.push(
+        Import.module(aDependencies[i])
+      );
     }
     //When all modules are loaded, apply them on the implementation function
     Promise.all(aModulePromises).then(function(aModules){

@@ -14,15 +14,8 @@ module.exports = function(sPath){
   var oImport = require(__dirname + '/Import.js')();
   oUtils.setObject(CORE_NAMESPACE + '.Import', oImport);
 
-  //Setup Node dependency manager
-  var NodeDependencyManager = require(__dirname + '/NodeDependencyManager.js');
-  var oNodeDependencyManager = new NodeDependencyManager({
-    path: sPath + '/node_dependencies.config.json'
-  });
-  oUtils.setObject(CORE_NAMESPACE + '.NodeDependencyManager', oNodeDependencyManager);
-
   //Start define
-  var fnDefine = require(__dirname + '/define.js')(oNodeDependencyManager,oImport);
+  var fnDefine = require(__dirname + '/define.js')(oImport);
   oUtils.setObject('define', fnDefine);
 
   oImport.mapModulePath('injectjs','/node_modules/node-injectjs/src');
