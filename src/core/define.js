@@ -9,13 +9,23 @@ module.exports = function(Import){
   * //It should be called when your module is ready to be consumed.
   * module.exports = function(fnResolve){
   *   "use strict";
-  *   define(['app.src.models.User','app.src.core.security.Authentication'],function(User, Authentication){
+  *   define([
+  *     'app.src.models.User',
+  *     'app.src.core.security.Authentication'
+  *   ],(User, Authentication)=>{
   *     //This function will only load once both User and Authentication are also loaded, including their dependencies.
-  *     function MyFunction(){};
+  *     class MyModule {
+  *       
+  *       constructor(){
+  *         //Do Something
+  *       }
+  *       
+  *       myModuleFunction(){
+  *         //Do Something Else
+  *       }
+  *     }
   *
-  *     MyFunction.prototype.myMethod = function(){...do something};
-  *
-  *     fnResolve(MyFunction) //Resolve the promise once this module is ready.
+  *     fnResolve(MyModule); //Resolve the promise once this module is ready.
   *   });
   * }
   * @param {String[]} aDependencies
