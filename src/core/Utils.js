@@ -8,7 +8,7 @@ module.exports = function(fnResolve){
       return fnToBeProxied.apply(oProxyContext,aArguments ? Array.prototype.slice.call(arguments).concat(aArguments) : arguments);
     };
   };
-  Utils.prototype.setObject = function(sNamespace, fnConstructor){
+  Utils.prototype.setObject = function(sNamespace, oObject){
     var aSplittedNamespace = sNamespace.split('.');
     var oNavigator = global;
     for(var i = 0, ii = aSplittedNamespace.length - 1; i < ii; i++){
@@ -19,7 +19,7 @@ module.exports = function(fnResolve){
       }
     }
     //Set the constructor of the class to the last node of the namespace
-    oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = fnConstructor;
+    oNavigator[aSplittedNamespace[aSplittedNamespace.length - 1]] = oObject;
   };
 
   var oUtils = new Utils();

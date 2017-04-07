@@ -127,7 +127,7 @@ module.exports = function(fnResolve){
     if (!this._mCachedPromises.hasOwnProperty(sRequiredAlias)){
       var iTimeoutID = setTimeout(function(){
         console.log('Dependency taking too long to load: ', sRequiredAlias);
-      },2000);
+      },2000); //TODO: Make this configurable
 
       var oPromise = new Promise(function(fnResolve){
         require(this._assembleRequirePath(sRequiredAlias,true))(fnResolve);

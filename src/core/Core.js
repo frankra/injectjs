@@ -1,10 +1,9 @@
 module.exports = function(sPath){
   "use strict";
-
-  if (!sPath){
-    //If nothing is provided, use the working directory as path;
-    sPath = process.cwd();
-  }
+  
+  //If nothing is provided, use the working directory as path;
+  sPath = sPath || process.cwd();
+  
   //Load test dependencies
   var CORE_NAMESPACE = 'injectjs.core';
 
