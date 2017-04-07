@@ -1,8 +1,7 @@
 language: node_js
 node_js:
-- 4.0.0
-- 5.8.0
-- 6.1.0
+- 6.10.2
+- 7
 after_success: node build_scripts/update_jsdoc.js
 deploy:
   provider: npm
