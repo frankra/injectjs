@@ -143,29 +143,29 @@ describe("src.core.Import.prototype - Inspection",function(){
       });
 
       it("Should provide a Promise for the module required",function(){
-        chai.expect(injectjs.core.Import.module('injectjs.base.Class') instanceof Promise).to.equal(true);
+        chai.expect(injectjs.core.Import.module('injectjs.core.Import') instanceof Promise).to.equal(true);
       });
 
       it("Should cache the Promise and return it if the same module is requested again without loading it again",function(){
-        var oFirstPromise = injectjs.core.Import.module('injectjs.base.Class');
+        var oFirstPromise = injectjs.core.Import.module('injectjs.core.Import');
 
-        chai.expect(injectjs.core.Import.module('injectjs.base.Class')).to.equal(oFirstPromise);
+        chai.expect(injectjs.core.Import.module('injectjs.core.Import')).to.equal(oFirstPromise);
 
         chai.expect(injectjs.core.Import._assembleRequirePath).to.have.been.called.exactly(1);
       });
 
       it("Should return the same module on the promise",function(done){
         define([
-          'injectjs.base.Class',
-          'injectjs.base.Class',
-          'injectjs.base.Class'
-        ],function(Class1,Class2,Class3){
+          'injectjs.core.Import',
+          'injectjs.core.Import',
+          'injectjs.core.Import'
+        ],function(Import1, Import2, Import3){
 
-          chai.expect(typeof Class1).to.equal("function");
-          chai.expect(typeof Class2).to.equal("function");
-          chai.expect(typeof Class3).to.equal("function");
+          chai.expect(typeof Import1).to.equal("object");
+          chai.expect(typeof Import2).to.equal("object");
+          chai.expect(typeof Import3).to.equal("object");
 
-          chai.expect(Class1 === Class2 && Class2  === Class3).to.equal(true);
+          chai.expect(Import1 === Import2 && Import2  === Import3).to.equal(true);
           done();
         });
       });

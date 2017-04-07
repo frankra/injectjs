@@ -5,20 +5,14 @@ describe("src.core.define.prototype - Creation define", function() {
   });
 
   it("Should call the implementation function once the dependencies were fetched",function(done) {
-    define(['injectjs.base.Class'],function(Class){
-      chai.expect(true).to.equal(true); //Ok this was called.
+    define(['injectjs.core.Import'],function(Import){
+      chai.expect(Import).to.not.equal(undefined);
       done();
     })
   });
-  it("Should provide the dependencies required",function(done) {
-    define(['injectjs.core.Utils'],function(Class){
-      chai.expect(Class).to.not.equal(undefined);
-      done();
-    })
-  });
-  it("Should provide the Node dependencies required",function(done) {
-    define(['injectjs.base.Class'],function(Class,oGCM){
-      chai.expect(Class).to.not.equal(undefined);
+  it("Should provide the same dependency module after it is fetched",function(done) {
+    define(['injectjs.core.Import','injectjs.core.Import'],function(Import1, Import2){
+      chai.expect(Import1).to.equal(Import2);
       done();
     })
   });

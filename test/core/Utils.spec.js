@@ -1,3 +1,5 @@
+require('./../bootstrap.js')();
+
 define(['injectjs.core.Utils'],function(Utils){
 
   beforeEach(function(){
