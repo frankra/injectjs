@@ -48,7 +48,7 @@ module.exports = function(Import){
       fnImplementation.apply(fnImplementation,aModules);
     }).catch(function(e){
       //This should be handled properly...
-      console.log('Error while executing callback from define API: ',e.stack);
+      console.log('Error while executing callback from define API: ', e);
     });
   }
   return define;

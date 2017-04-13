@@ -140,8 +140,8 @@ module.exports = function(fnResolve){
       }).catch(function(oError){
         console.error(//This should be handled properly.
           'Error while loading module: ' + sRequiredAlias,
-          'Original Error Message: ' + oError.message,
-          oError.stack
+          'Original Error: ',
+          oError
         );
       });
 
@@ -163,8 +163,8 @@ module.exports = function(fnResolve){
   };
 
   var oImport;
-  if (injectjs && injectjs.core && injectjs.core.Import){
-    oImport = injectjs.core.Import;
+  if (global.injectjs && global.injectjs.core && global.injectjs.core.Import){
+    oImport = global.injectjs.core.Import;
 
   }else {
     oImport = new Import();

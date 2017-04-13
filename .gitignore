@@ -5,3 +5,4 @@ npm-debug.log
 out/
 coverage/
 injectjs-api-documentation/
+.DS_Store

@@ -6,5 +6,6 @@
   "maxdepth": 3,
   "strict": true,
   "validthis" : true,
-  "-W093": true
+  "-W093": true,
+  "esversion": 6
 }

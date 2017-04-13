@@ -1,21 +1,17 @@
-module.exports = function(sPath){
+module.exports = function(){
   "use strict";
-  
-  //If nothing is provided, use the working directory as path;
-  sPath = sPath || process.cwd();
-  
-  //Load test dependencies
-  var CORE_NAMESPACE = 'injectjs.core';
-
-  var oUtils = require(__dirname + '/Utils.js')();
-  oUtils.setObject(CORE_NAMESPACE + '.Utils', oUtils);
-
-  var oImport = require(__dirname + '/Import.js')();
-  oUtils.setObject(CORE_NAMESPACE + '.Import', oImport);
-
-  //Start define
-  var fnDefine = require(__dirname + '/define.js')(oImport);
-  oUtils.setObject('define', fnDefine);
-
+  //Initialize define API
+  let oImport = require(__dirname + '/Import.js')();
+  let fnDefine = require(__dirname + '/define.js')(oImport);
+  //Map Injectjs core dependencies
   oImport.mapModulePath('injectjs','/node_modules/node-injectjs/src');
+  //Set define API Globally
+  global.define = fnDefine;
+  
+  return { //defines injectjs.define and injectjs.core.Import
+    define: fnDefine,
+    core: {
+      Import: oImport
+    }
+  };
 };
