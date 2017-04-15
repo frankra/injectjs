@@ -1,4 +1,4 @@
-module.exports = function(Import){
+module.exports = (Import)=>{
   'use strict';
 
   /**
@@ -36,9 +36,9 @@ module.exports = function(Import){
   *		The callback function to be called when all required dependencies are resolved.
   */
   function define(aDependencies,fnImplementation){
-    var aModulePromises = [];
+    let aModulePromises = [];
     //Fetch all requird dependencies
-    for (var i = 0, ii = aDependencies.length; i < ii; i++){
+    for (let i = 0, ii = aDependencies.length; i < ii; i++){
       aModulePromises.push(
         Import.module(aDependencies[i])
       );

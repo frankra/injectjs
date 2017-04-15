@@ -1,4 +1,4 @@
-module.exports = function(){
+module.exports = ()=>{
   "use strict";
   //Initialize define API
   let oImport = require(__dirname + '/Import.js')();
