@@ -1,5 +1,15 @@
-module.exports = ()=>{
+module.exports = (mParams)=>{
   "use strict";
+
+  //Setup
+  let sDefineFunctionAlias = 'define';
+
+  if (mParams){
+    if (typeof mParams.defineFunctionAlias === "string"){
+      sDefineFunctionAlias = mParams.defineFunctionAlias;
+    }
+  }
+
   //Initialize define API
   let oImport = require(__dirname + '/Import.js')();
   let fnDefine = require(__dirname + '/define.js')(oImport);
@@ -8,9 +18,9 @@ module.exports = ()=>{
   //Map Injectjs core dependencies
   oImport.mapModulePath('injectjs','/node_modules/node-injectjs/src');
   //Set define API Globally - although is a bad practice, it is OK in this case because it improves the usability of this API later on
-  global.define = fnDefine;
+  global[sDefineFunctionAlias] = fnDefine;
   //set objects
-  injectjs.define = fnDefine;
+  injectjs[sDefineFunctionAlias] = fnDefine;
   injectjs.core = {
     Import: oImport
   };
