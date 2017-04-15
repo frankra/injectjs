@@ -1,4 +1,4 @@
-module.exports = function(NodeDependencyManager,Import){
+module.exports = Import=>{
   'use strict';
 
   /**
@@ -9,13 +9,23 @@ module.exports = function(NodeDependencyManager,Import){
   * //It should be called when your module is ready to be consumed.
   * module.exports = function(fnResolve){
   *   "use strict";
-  *   define(['app.src.models.User','app.src.core.security.Authentication'],function(User, Authentication){
+  *   define([
+  *     'app.src.models.User',
+  *     'app.src.core.security.Authentication'
+  *   ],(User, Authentication)=>{
   *     //This function will only load once both User and Authentication are also loaded, including their dependencies.
-  *     function MyFunction(){};
+  *     class MyModule {
+  *       
+  *       constructor(){
+  *         //Do Something
+  *       }
+  *       
+  *       myModuleFunction(){
+  *         //Do Something Else
+  *       }
+  *     }
   *
-  *     MyFunction.prototype.myMethod = function(){...do something};
-  *
-  *     fnResolve(MyFunction) //Resolve the promise once this module is ready.
+  *     fnResolve(MyModule); //Resolve the promise once this module is ready.
   *   });
   * }
   * @param {String[]} aDependencies
@@ -25,27 +35,21 @@ module.exports = function(NodeDependencyManager,Import){
   * @param {function} fnImplementation
   *		The callback function to be called when all required dependencies are resolved.
   */
-  function define(aDependencies,fnImplementation){
-    var aModulePromises = [];
+  const define  = (aDependencies,fnImplementation)=>{
+    let aModulePromises = [];
     //Fetch all requird dependencies
-    for (var i = 0, ii = aDependencies.length; i < ii; i++){
-      if (aDependencies[i].indexOf('$') === 0){ //Node dependency, should be mapped on node_dependencies.config.json
-        aModulePromises.push(
-          NodeDependencyManager.getDependency(aDependencies[i].replace('$','')) //remove $ from the name
-        );
-      }else { //Custom dependency, should have its path maped through the Import.mapModulePath API
-        aModulePromises.push(
-          Import.module(aDependencies[i])
-        );
-      }
+    for (let i = 0, ii = aDependencies.length; i < ii; i++){
+      aModulePromises.push(
+        Import.module(aDependencies[i])
+      );
     }
     //When all modules are loaded, apply them on the implementation function
-    Promise.all(aModulePromises).then(function(aModules){
+    Promise.all(aModulePromises).then(aModules=>{
       fnImplementation.apply(fnImplementation,aModules);
-    }).catch(function(e){
+    }).catch(oError=>{
       //This should be handled properly...
-      console.log('Error while executing callback from define API: ',e.stack);
+      console.log('Error while executing callback from define API: ', oError);
     });
-  }
+  };
   return define;
 };

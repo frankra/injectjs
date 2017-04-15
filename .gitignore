@@ -1,7 +1,6 @@
 node_modules/
 npm-debug.log
-/injectjs.config.json
-/node_dependencies.config.json
 out/
 coverage/
 injectjs-api-documentation/
+.DS_Store

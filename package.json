@@ -1,6 +1,6 @@
 {
   "name": "node-injectjs",
-  "version": "1.0.10",
+  "version": "2.0.0",
   "description": "A NodeJS Dependency Management Framework",
   "main": "src/core/Core.js",
   "scripts": {
@@ -8,7 +8,9 @@
     "testrunner": "mocha -w --recursive test*/*",
     "test": "mocha --recursive test*/*",
     "jshint": "./githooks/prepare-commit-msg",
-    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*"
+    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*",
+    "jsdoc" : "node build_scripts/update_jsdoc.js",
+    "clean": "rm -r out; rm -r coverage;"
   },
   "bin": {
     "injectjs": "bin/client"
@@ -24,23 +26,15 @@
   },
   "homepage": "https://github.com/frankrafael/injectjs#readme",
   "devDependencies": {
-    "body-parser": "^1.13.1",
     "chai": "^3.2.0",
     "chai-spies": "^0.7.0",
-    "connect-mongo": "^1.1.0",
-    "express": "^4.12.3",
-    "express-session": "^1.11.3",
     "istanbul": "^0.4.3",
     "jsdoc": "^3.4.0",
     "jshint": "^2.9.2",
     "mocha": "^3.1.2",
-    "mocha-spec-cov-alt": "^1.1.1",
-    "mongodb": "^2.0.33",
-    "node-gcm": "^0.14.0",
-    "socket.io": "^1.4.6"
+    "mocha-spec-cov-alt": "^1.1.1"
   },
   "files": [
-    "bin",
     "src"
   ]
 }

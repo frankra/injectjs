@@ -1,47 +1,68 @@
-describe("src.core.Import.prototype - Inspection",function(){
+describe("src.core.Import.prototype - Inspection", function () {
 
-  beforeEach(function(){
+  beforeEach(function () {
     require('./../bootstrap.js')();
   });
 
-  it("Should be a singvaron",function(done){
-    injectjs.core.Import.module('injectjs.core.Import').then(function(oImport){
-      chai.expect(injectjs.core.Import).to.equal(oImport);
+  it("Should be a singleton", function (done) {
+    define([
+      'injectjs.core.Import',
+      'injectjs.core.Import'
+    ], function (Import1, Import2) {
+      chai.expect(Import1).to.equal(Import2);
       done();
     });
   });
 
-  describe("src.core.Import.prototype - API",function(){
-    describe("src.core.Import.prototype - Map module path",function(){
+  describe("src.core.Import.prototype - API", function () {
+    describe("src.core.Import.prototype - Map module path", function () {
 
-      beforeEach(function(){
-        injectjs.core.Import._mPathTree = {}; //Clear Mapping
+      beforeEach(function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          Import._mPathTree = {}; //Clear Mapping
+          done();
+        });
       });
 
-      it("Should have a map between the given alias to the given physical path",function(){
-        var sAlias = 'app.src.core.files';
-        var sPhysicalPath = 'C:/Application/src';
+      it("Should have a map between the given alias to the given physical path", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sAlias = 'app.src.core.files';
+          var sPhysicalPath = 'C:/Application/src';
 
-        injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+          Import.mapModulePath(sAlias, sPhysicalPath);
 
-        chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
+          chai.expect(Import._getRegisterFromAlias(Import._mPathTree, sAlias.split('.')).path).to.equal(sPhysicalPath);
+          done();
+        });
+
       });
 
-      it("Should append new mapped paths to the tree map, allowing enhanced mapping",function(){
-        var sAlias = 'app.src.core.files';
-        var sPhysicalPath = 'C:/Application/src';
+      it("Should append new mapped paths to the tree map, allowing enhanced mapping", function (done) {
 
-        var sBranchAlias = 'app.src.core.files.services.security';
-        var sBranchPhysicalPath = 'D:/Other/Source/Of/Files';
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sAlias = 'app.src.core.files';
+          var sPhysicalPath = 'C:/Application/src';
 
-        injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
-        injectjs.core.Import.mapModulePath(sBranchAlias,sBranchPhysicalPath);
+          var sBranchAlias = 'app.src.core.files.services.security';
+          var sBranchPhysicalPath = 'D:/Other/Source/Of/Files';
 
-        chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sAlias.split('.')).path).to.equal(sPhysicalPath);
-        chai.expect(injectjs.core.Import._getRegisterFromAlias(injectjs.core.Import._mPathTree,sBranchAlias.split('.')).path).to.equal(sBranchPhysicalPath);
+          Import.mapModulePath(sAlias, sPhysicalPath);
+          Import.mapModulePath(sBranchAlias, sBranchPhysicalPath);
+
+          chai.expect(Import._getRegisterFromAlias(Import._mPathTree, sAlias.split('.')).path).to.equal(sPhysicalPath);
+          chai.expect(Import._getRegisterFromAlias(Import._mPathTree, sBranchAlias.split('.')).path).to.equal(sBranchPhysicalPath);
+          done();
+        });
+
       });
 
-      it("Should fallback to the last node containing a path mapping, if the current resolved node does not have it.",function(){
+      it("Should fallback to the last node containing a path mapping, if the current resolved node does not have it.", function (done) {
         /*This is an edge case. Given that you have mapped the path like 'app.src',
         the framework will basically create two nodes on the mapping tree in which the last one
         is containing the 'path' attribute, which contains the physical path to the source(s).
@@ -51,165 +72,222 @@ describe("src.core.Import.prototype - Inspection",function(){
         the last valid node. See test:
         */
 
-        var sBaseAppAlias = 'app.src';
-        var sBaseAppPath = '/Application/src';
-
-        var sAppEnhancedAlias = 'app.src.core.services.security';
-        var sAppEnhancedPath = '/Another/Application/Mapping';
-
-        var sAliasRequested = 'app.src.core.MyCoreModule';
-        var sExpectedAbsolutePath = process.cwd() + sBaseAppPath/*Because it is defined by the last valid node*/ + '/core/MyCoreModule';
-
-        injectjs.core.Import.mapModulePath(sBaseAppAlias,sBaseAppPath);
-        injectjs.core.Import.mapModulePath(sAppEnhancedAlias,sAppEnhancedPath);
-
-        chai.expect(injectjs.core.Import.getAbsolutePath(sAliasRequested)).to.equal(sExpectedAbsolutePath);
-      });
-
-      it("Should should throw an error if the path was indeed not mapped",function(){
-        var sAlias = 'app.src.core.files';
-        var sPhysicalPath = '/Application/src';
-        var sUnknownAlias = 'app.src.unmapped.alias';
-        var sExpectedAbsolutePath = process.cwd() + sPhysicalPath + '/unmapped/alias';
-
-        injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
-
-        chai.expect(function(){
-          injectjs.core.Import.getAbsolutePath(sUnknownAlias);
-        }).to.throw(/Attribute 'path' not found on node with alias segment/);
-      });
-    });
-
-    describe("src.core.Import.prototype - Set module",function(){
-
-      beforeEach(function(){
-        injectjs.core.Import._mPathTree = {}; //Clear Mapping
-        injectjs.core.Import._mCachedPromises = {}; //Clear Cache
-      });
-
-      it("Should inject the module in the modules cache as a promise, even though the module is not a promise",function(done){
-        var sAlias = 'app.src.core.files';
-        var oModule = {
-          test: true
-        };
-
-        injectjs.core.Import.setModule(sAlias,oModule);//Call API
-
-        var oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
-        chai.expect(
-          oCachedPromise instanceof Promise
-        ).to.equal(true);
-
-        oCachedPromise.then(function(oCachedModule){
-          chai.expect(oCachedModule).to.deep.equal(oModule);
-          done();
-        })
-        .catch(function(oAssertionError){
-          console.log(oAssertionError);
-        });
-      });
-      it("Should just register the module on the cache if it is a promise already",function(done){
-        var sAlias = 'app.src.core.files';
-        var oModule = {
-          test: true
-        };
-        var oModulePromise = new Promise(function(fnResolve){
-          fnResolve(oModule);
-        })
-
-        injectjs.core.Import.setModule(sAlias,oModulePromise);//Call API
-
-        var oCachedPromise = injectjs.core.Import._mCachedPromises[sAlias];
-        chai.expect(oModulePromise).to.deep.equal(oCachedPromise);
-
-
-        oCachedPromise.then(function(oCachedModule){
-          chai.expect(oCachedModule).to.deep.equal(oModule);
-          done();
-        })
-        .catch(function(oAssertionError){
-          console.log(oAssertionError);
-        });
-      });
-    });
-
-    describe("src.core.Import.prototype - Import module",function(){
-      beforeEach(function(){
-        chai.spy.on(injectjs.core.Import,'_assembleRequirePath');
-        injectjs.core.Import._mCachedPromises = {}; //Clear Cache
-      });
-      afterEach(function(){
-        injectjs.core.Import._assembleRequirePath.reset();
-      });
-
-      it("Should provide a Promise for the module required",function(){
-        chai.expect(injectjs.core.Import.module('injectjs.base.Class') instanceof Promise).to.equal(true);
-      });
-
-      it("Should cache the Promise and return it if the same module is requested again without loading it again",function(){
-        var oFirstPromise = injectjs.core.Import.module('injectjs.base.Class');
-
-        chai.expect(injectjs.core.Import.module('injectjs.base.Class')).to.equal(oFirstPromise);
-
-        chai.expect(injectjs.core.Import._assembleRequirePath).to.have.been.called.exactly(1);
-      });
-
-      it("Should return the same module on the promise",function(done){
         define([
-          'injectjs.base.Class',
-          'injectjs.base.Class',
-          'injectjs.base.Class'
-        ],function(Class1,Class2,Class3){
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sBaseAppAlias = 'app.src';
+          var sBaseAppPath = '/Application/src';
 
-          chai.expect(typeof Class1).to.equal("function");
-          chai.expect(typeof Class2).to.equal("function");
-          chai.expect(typeof Class3).to.equal("function");
+          var sAppEnhancedAlias = 'app.src.core.services.security';
+          var sAppEnhancedPath = '/Another/Application/Mapping';
 
-          chai.expect(Class1 === Class2 && Class2  === Class3).to.equal(true);
+          var sAliasRequested = 'app.src.core.MyCoreModule';
+          var sExpectedAbsolutePath = process.cwd() + sBaseAppPath/*Because it is defined by the last valid node*/ + '/core/MyCoreModule';
+
+          Import.mapModulePath(sBaseAppAlias, sBaseAppPath);
+          Import.mapModulePath(sAppEnhancedAlias, sAppEnhancedPath);
+
+          chai.expect(Import.getAbsolutePath(sAliasRequested)).to.equal(sExpectedAbsolutePath);
+          done();
+        });
+
+      });
+
+      it("Should should throw an error if the path was indeed not mapped", function (done) {
+
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sAlias = 'app.src.core.files';
+          var sPhysicalPath = '/Application/src';
+          var sUnknownAlias = 'app.src.unmapped.alias';
+          var sExpectedAbsolutePath = process.cwd() + sPhysicalPath + '/unmapped/alias';
+
+          Import.mapModulePath(sAlias, sPhysicalPath);
+
+          chai.expect(function () {
+            Import.getAbsolutePath(sUnknownAlias);
+          }).to.throw(/Attribute 'path' not found on node with alias segment/);
+          done();
+        });
+
+      });
+    });
+
+    describe("src.core.Import.prototype - Set module", function (done) {
+
+      beforeEach(function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          Import._mPathTree = {}; //Clear Mapping
+          Import._mCachedPromises = {}; //Clear Cache
           done();
         });
       });
 
-      it("Should return manually set module",function(done){
-        var sPath = 'my.super.path';
-        var oModule = {test:true};
+      it("Should inject the module in the modules cache as a promise, even though the module is not a promise", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sAlias = 'app.src.core.files';
+          var oModule = {
+            test: true
+          };
 
-        injectjs.core.Import.setModule(sPath, oModule);
+          Import.setModule(sAlias, oModule);//Call API
 
-        injectjs.core.Import.module(sPath)
-        .then(function(oResolvedModule){
+          var oCachedPromise = Import._mCachedPromises[sAlias];
           chai.expect(
-            oResolvedModule
-          ).to.deep.equal(oModule);
+            oCachedPromise instanceof Promise
+          ).to.equal(true);
 
-          done();
-        })
-        .catch(function(oAssertionError){
-          console.log(oAssertionError);
-        })
+          oCachedPromise.then(function (oCachedModule) {
+            chai.expect(oCachedModule).to.deep.equal(oModule);
+            done();
+          });
+        });
+
+      });
+      it("Should just register the module on the cache if it is a promise already", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sAlias = 'app.src.core.files';
+          var oModule = {
+            test: true
+          };
+          var oModulePromise = new Promise(function (fnResolve) {
+            fnResolve(oModule);
+          })
+
+          Import.setModule(sAlias, oModulePromise);//Call API
+
+          var oCachedPromise = Import._mCachedPromises[sAlias];
+          chai.expect(oModulePromise).to.deep.equal(oCachedPromise);
+
+          oCachedPromise.then(function (oCachedModule) {
+            chai.expect(oCachedModule).to.deep.equal(oModule);
+            done();
+          });
+        });
+
       });
     });
 
-    describe("src.core.Import.prototype - Transform Alias to Path",function(){
-      it("Should provide an API to transform the Alias into the physical path",function(){
-        var sAlias = 'app.src.core.files';
-        var sPhysicalPath = '/Application/src';
+    describe("src.core.Import.prototype - Import module", function () {
+      beforeEach(function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          Import.mapModulePath('injectjs','/src');
+          chai.spy.on(Import, '_assembleRequirePath');
+          Import._mCachedPromises = {}; //Clear Cache
+          done();
+        });
 
-        injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
-
-        chai.expect(injectjs.core.Import.getAbsolutePath(sAlias)).to.equal(process.cwd() + sPhysicalPath);
+      });
+      afterEach(function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          Import._assembleRequirePath.reset();
+          done();
+        });
       });
 
-      it("Should append the additional alias parts to the physical path",function(){
-        var sAlias = 'app.src.core.files';
-        var sCustomRequireAlias = 'app.src.core.files.test';
+      it("Should provide a Promise for the module required", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          chai.expect(Import.module('injectjs.core.Import') instanceof Promise).to.equal(true);
 
-        var sPhysicalPath = '/Application/src';
-        var sCustomPhysicalPath = '/Application/src/test';
+          done();
+        });
 
-        injectjs.core.Import.mapModulePath(sAlias,sPhysicalPath);
+      });
 
-        chai.expect(injectjs.core.Import.getAbsolutePath(sCustomRequireAlias)).to.equal(process.cwd() + sCustomPhysicalPath);
+      it("Should cache the Promise and return it if the same module is requested again without loading it again", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var oFirstPromise = Import.module('injectjs.core.Import');
+
+          chai.expect(Import.module('injectjs.core.Import')).to.equal(oFirstPromise);
+
+          chai.expect(Import._assembleRequirePath).to.have.been.called.exactly(1);
+          done();
+        });
+      });
+
+      it("Should return the same module on the promise", function (done) {
+        define([
+          'injectjs.core.Import',
+          'injectjs.core.Import',
+          'injectjs.core.Import'
+        ], function (Import1, Import2, Import3) {
+
+          chai.expect(typeof Import1).to.equal("object");
+          chai.expect(typeof Import2).to.equal("object");
+          chai.expect(typeof Import3).to.equal("object");
+
+          chai.expect(Import1 === Import2 && Import2 === Import3).to.equal(true);
+          done();
+        });
+      });
+
+      it("Should return manually set module", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sPath = 'my.super.path';
+          var oModule = { test: true };
+
+          Import.setModule(sPath, oModule);
+
+          Import.module(sPath)
+            .then(function (oResolvedModule) {
+              chai.expect(
+                oResolvedModule
+              ).to.deep.equal(oModule);
+
+              done();
+            });
+        });
+
+      });
+    });
+
+    describe("src.core.Import.prototype - Transform Alias to Path", function () {
+      it("Should provide an API to transform the Alias into the physical path", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sAlias = 'app.src.core.files';
+          var sPhysicalPath = '/Application/src';
+
+          Import.mapModulePath(sAlias, sPhysicalPath);
+
+          chai.expect(Import.getAbsolutePath(sAlias)).to.equal(process.cwd() + sPhysicalPath);
+          done();
+        });
+      });
+
+      it("Should append the additional alias parts to the physical path", function (done) {
+        define([
+          'injectjs.core.Import'
+        ], function (Import) {
+          var sAlias = 'app.src.core.files';
+          var sCustomRequireAlias = 'app.src.core.files.test';
+
+          var sPhysicalPath = '/Application/src';
+          var sCustomPhysicalPath = '/Application/src/test';
+
+          Import.mapModulePath(sAlias, sPhysicalPath);
+
+          chai.expect(Import.getAbsolutePath(sCustomRequireAlias)).to.equal(process.cwd() + sCustomPhysicalPath);
+          done();
+        });
       });
     });
   });
