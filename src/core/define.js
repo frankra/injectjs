@@ -1,4 +1,4 @@
-module.exports = (Import)=>{
+module.exports = Import=>{
   'use strict';
 
   /**
@@ -35,7 +35,7 @@ module.exports = (Import)=>{
   * @param {function} fnImplementation
   *		The callback function to be called when all required dependencies are resolved.
   */
-  function define(aDependencies,fnImplementation){
+  const define  = (aDependencies,fnImplementation)=>{
     let aModulePromises = [];
     //Fetch all requird dependencies
     for (let i = 0, ii = aDependencies.length; i < ii; i++){
@@ -44,12 +44,12 @@ module.exports = (Import)=>{
       );
     }
     //When all modules are loaded, apply them on the implementation function
-    Promise.all(aModulePromises).then(function(aModules){
+    Promise.all(aModulePromises).then(aModules=>{
       fnImplementation.apply(fnImplementation,aModules);
-    }).catch(function(e){
+    }).catch(oError=>{
       //This should be handled properly...
-      console.log('Error while executing callback from define API: ', e);
+      console.log('Error while executing callback from define API: ', oError);
     });
-  }
+  };
   return define;
 };

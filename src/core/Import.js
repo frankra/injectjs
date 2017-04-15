@@ -1,4 +1,4 @@
-module.exports = function (fnResolve) {
+module.exports = fnResolve=>{
   "use strict";
 
   /**
@@ -128,19 +128,19 @@ module.exports = function (fnResolve) {
     */
     module(sRequiredAlias) {
       if (!this._mCachedPromises.hasOwnProperty(sRequiredAlias)) {
-        let iTimeoutID = setTimeout(function () {
+        let iTimeoutID = setTimeout(()=>{
           console.log('Dependency taking too long to load: ', sRequiredAlias);
         }, 2000); //TODO: Make this configurable
 
-        let oPromise = new Promise(function (fnResolve) {
+        let oPromise = new Promise(fnResolve=>{
           require(this._assembleRequirePath(sRequiredAlias, true))(fnResolve);
-        }.bind(this));
+        });
 
-        oPromise.then(function (oModule) {
+        oPromise.then(oModule=>{
           clearTimeout(iTimeoutID);
 
           return oModule;
-        }).catch(function (oError) {
+        }).catch(oError=> {
           console.error(//This should be handled properly.
             'Error while loading module: ' + sRequiredAlias,
             'Original Error: ',
