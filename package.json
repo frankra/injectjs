@@ -8,7 +8,9 @@
     "testrunner": "mocha -w --recursive test*/*",
     "test": "mocha --recursive test*/*",
     "jshint": "./githooks/prepare-commit-msg",
-    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*"
+    "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*",
+    "jsdoc" : "node build_scripts/update_jsdoc.js",
+    "clean": "rm -r out; rm -r coverage;"
   },
   "bin": {
     "injectjs": "bin/client"
