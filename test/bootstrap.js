@@ -1,4 +1,4 @@
-module.exports = function(done){
+module.exports = function(){
   let __base = process.cwd();
   //Load test dependencies
   let injectjs = require(__base + '/src/core/Core.js')(__dirname + '/core');
@@ -7,7 +7,4 @@ module.exports = function(done){
   //Load test Framework
   global.chai = require('chai');
   global.chai.use(require('chai-spies'));
-
-  
-  
 }

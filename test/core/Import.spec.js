@@ -180,6 +180,7 @@ describe("src.core.Import.prototype - Inspection", function () {
         define([
           'injectjs.core.Import'
         ], function (Import) {
+          Import.mapModulePath('injectjs','/src');
           chai.spy.on(Import, '_assembleRequirePath');
           Import._mCachedPromises = {}; //Clear Cache
           done();
@@ -200,6 +201,7 @@ describe("src.core.Import.prototype - Inspection", function () {
           'injectjs.core.Import'
         ], function (Import) {
           chai.expect(Import.module('injectjs.core.Import') instanceof Promise).to.equal(true);
+
           done();
         });
 
