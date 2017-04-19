@@ -1,6 +1,6 @@
 {
   "name": "node-injectjs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A NodeJS Dependency Management Framework",
   "main": "src/core/Core.js",
   "scripts": {
@@ -11,9 +11,6 @@
     "coverage": "istanbul cover _mocha -- --recursive -R node_modules/mocha-spec-cov-alt/ test*/*",
     "jsdoc" : "node build_scripts/update_jsdoc.js",
     "clean": "rm -r out; rm -r coverage;"
-  },
-  "bin": {
-    "injectjs": "bin/client"
   },
   "repository": {
     "type": "git",
