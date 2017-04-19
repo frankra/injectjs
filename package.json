@@ -12,9 +12,6 @@
     "jsdoc" : "node build_scripts/update_jsdoc.js",
     "clean": "rm -r out; rm -r coverage;"
   },
-  "bin": {
-    "injectjs": "bin/client"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/frankrafael/injectjs.git"
