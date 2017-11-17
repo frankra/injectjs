@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - 6.10.2
 - 7
-after_success: node build_scripts/update_jsdoc.js
+- 8 
 deploy:
   provider: npm
   email: franktestrlz@gmail.com
