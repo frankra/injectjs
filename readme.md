@@ -4,17 +4,13 @@
 [![bitHound Dev Dependencies](https://www.bithound.io/github/frankrafael/injectjs/badges/devDependencies.svg)](https://www.bithound.io/github/frankrafael/injectjs/master/dependencies/npm)
 [![bitHound Code](https://www.bithound.io/github/frankrafael/injectjs/badges/code.svg)](https://www.bithound.io/github/frankrafael/injectjs)
 
-# InjectJS
-### Asynchronous dependency management framework
+# InjectJS (node-injectjs)
+Asynchronous Dependency Management Framework
 
-### How to use:
+## Get Injectjs:
+On your terminal, run: `npm i node-injectjs -E`
 
-#### Initial steps
-1. On your project folder run: `npm i node-injectjs -g` in order to install the client.
-2. Then run: `injectjs init` in order to bootstrap the application.
+## How to use:
 
-#### Implementation
-Coming soon..
 
-### Wiki and Documentation
-[Link to JSDoc](http://frankrafael.github.io/injectjs-api-documentation/)
+
